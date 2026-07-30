@@ -488,7 +488,7 @@ function renderPdfReports() {
       <td>${pdf.size}</td>
       <td style="text-align: center;">
         <a href="${pdf.fileData}" download="${escapeHtml(pdf.title)}.pdf" class="btn btn-outline" style="padding: 0.3rem 0.6rem; font-size: 0.8rem; text-decoration: none; display: inline-flex; align-items: center; gap: 0.3rem;">
-          <i class="fa-solid fa-download"></i> İndir / Görüntüle
+          <i class="fa-solid fa-download"></i> İndir
         </a>
       </td>
     `;
