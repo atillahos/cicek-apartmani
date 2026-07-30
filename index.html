@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Çiçek Apartmanı Bilgilendirme Paneli</title>
+  
+  <!-- FontAwesome & Google Fonts -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- CSS -->
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* Read-only overrides for cells to look like display badges rather than buttons */
+    .cell-paid-btn {
+      cursor: default !important;
+      pointer-events: none !important;
+    }
+    .apt-month-badge {
+      cursor: default !important;
+      pointer-events: none !important;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- App Header -->
+  <header class="app-header">
+    <div class="container header-content">
+      <div class="logo-area">
+        <h1 id="buildingTitleDisplay">Çiçek Apartmanı 2026</h1>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content Container -->
+  <main class="container app-main">
+
+    <!-- Dues Table Section (Aidat Tablosu) -->
+    <section class="dues-section card-box">
+      <div class="dues-header">
+        <div class="dues-title">
+          <h2><i class="fa-solid fa-table-cells"></i> 2026 Aidat Takip Tablosu</h2>
+        </div>
+        <div class="dues-controls">
+          <div class="dues-rate-info">
+            <span>Aylık Aidat: <strong id="monthlyDuesDisplay">750 ₺</strong></span>
+          </div>
+          <div class="view-toggle">
+            <button class="toggle-btn active" id="btnTableView" title="Tablo Görünümü">
+              <i class="fa-solid fa-table-list"></i> Tablo
+            </button>
+            <button class="toggle-btn" id="btnGridView" title="Kart Görünümü (Mobil Uyumlu)">
+              <i class="fa-solid fa-table-cells-large"></i> Kartlar
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Table View (Desktop & Responsive Scroll) -->
+      <div class="table-responsive" id="tableViewContainer">
+        <table class="dues-table" id="duesTable">
+          <thead>
+            <tr>
+              <th class="sticky-col"><span class="m-full">Daire No / Sakin</span><span class="m-short">Daire</span></th>
+              <th><span class="m-full">OCA</span><span class="m-short">01</span></th>
+              <th><span class="m-full">ŞUB</span><span class="m-short">02</span></th>
+              <th><span class="m-full">MAR</span><span class="m-short">03</span></th>
+              <th><span class="m-full">NİS</span><span class="m-short">04</span></th>
+              <th><span class="m-full">MAY</span><span class="m-short">05</span></th>
+              <th><span class="m-full">HAZ</span><span class="m-short">06</span></th>
+              <th><span class="m-full">TEM</span><span class="m-short">07</span></th>
+              <th><span class="m-full">AĞU</span><span class="m-short">08</span></th>
+              <th><span class="m-full">EYL</span><span class="m-short">09</span></th>
+              <th><span class="m-full">EKİ</span><span class="m-short">10</span></th>
+              <th><span class="m-full">KAS</span><span class="m-short">11</span></th>
+              <th><span class="m-full">ARA</span><span class="m-short">12</span></th>
+              <th class="col-summary"><span class="m-full">Güncel Borç</span><span class="m-short">Borç</span></th>
+            </tr>
+          </thead>
+          <tbody id="duesTableBody">
+            <!-- JS Populated Rows -->
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Card / Grid View (Optimized for Mobile Screens) -->
+      <div class="cards-view-container hidden" id="gridViewContainer">
+        <div class="apartments-cards-grid" id="apartmentsCardsGrid">
+          <!-- JS Populated Mobile Cards -->
+        </div>
+      </div>
+    </section>
+
+
+    <!-- Ek Ödemeler Section (Ek Bütçe Toplama) -->
+    <section class="extra-collections-section card-box">
+      <div class="dues-header">
+        <div class="dues-title">
+          <h2><i class="fa-solid fa-table-cells"></i> Ek Aidat Takip Tablosu</h2>
+        </div>
+      </div>
+
+      <!-- Tablo Görünümü (Masaüstü) -->
+      <div class="table-responsive" id="extraTableViewContainer">
+        <table class="dues-table" id="extraCollectionsTable">
+          <thead>
+            <tr>
+              <th class="sticky-col">Ek Ödeme Başlığı</th>
+              <th>Tutar</th>
+              <th>D1</th>
+              <th>D2</th>
+              <th>D3</th>
+              <th>D4</th>
+              <th>D5</th>
+              <th>D6</th>
+              <th>D7</th>
+              <th>D8</th>
+              <th>D9</th>
+              <th>D10</th>
+              <th>D11</th>
+              <th>D12</th>
+              <th>D13</th>
+              <th>D14</th>
+              <th class="col-summary">Toplanan</th>
+            </tr>
+          </thead>
+          <tbody id="extraCollectionsBody">
+            <!-- Populated by JS -->
+          </tbody>
+        </table>
+        <div id="noExtraCollectionsNotice" class="no-data-notice hidden">
+          <i class="fa-solid fa-hand-holding-dollar"></i>
+          <p>Henüz tanımlanmış bir ek ödeme talebi bulunmuyor.</p>
+        </div>
+      </div>
+
+      <!-- Kart Görünümü (Mobil) -->
+      <div class="hidden" id="extraCardsViewContainer">
+        <div class="apartments-cards-grid" id="extraApartmentsCardsGrid">
+          <!-- Populated by JS -->
+        </div>
+        <div id="noExtraCollectionsNoticeMobile" class="no-data-notice hidden">
+          <i class="fa-solid fa-hand-holding-dollar"></i>
+          <p>Henüz tanımlanmış bir ek ödeme talebi bulunmuyor.</p>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- Expenses Section (Giderler Bölümü) -->
+    <section class="expenses-section card-box">
+      <div class="expenses-header">
+        <div>
+          <h2><i class="fa-solid fa-arrow-circle-right"></i> Aylık Giderler Paneli</h2>
+          <p>Bina sakinleri için tüm kayıtlı harcama detayları</p>
+        </div>
+      </div>
+
+      <div class="expenses-content-single">
+        <!-- Expense List & Filters -->
+        <div class="expenses-list-container">
+          <div class="expense-filters">
+            <div class="filter-group">
+              <label for="expenseMonthFilter">Ay Filtresi:</label>
+              <select id="expenseMonthFilter" class="form-control">
+                <option value="all">Tüm Aylar</option>
+                <option value="1">Ocak</option>
+                <option value="2">Şubat</option>
+                <option value="3">Mart</option>
+                <option value="4">Nisan</option>
+                <option value="5">Mayıs</option>
+                <option value="6">Haziran</option>
+                <option value="7">Temmuz</option>
+                <option value="8">Ağustos</option>
+                <option value="9">Eylül</option>
+                <option value="10">Ekim</option>
+                <option value="11">Kasım</option>
+                <option value="12">Aralık</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="expenses-table">
+              <thead>
+                <tr>
+                  <th>Tarih</th>
+                  <th>Harcama Başlığı</th>
+                  <th>Tutar</th>
+                </tr>
+              </thead>
+              <tbody id="expensesTableBody">
+                <!-- JS Populated Rows -->
+              </tbody>
+            </table>
+            <div id="noExpensesNotice" class="no-data-notice hidden">
+              <i class="fa-solid fa-folder-open"></i>
+              <p>Seçilen filtrelere uygun gider kaydı bulunamadı.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="app-footer">
+    <div class="container footer-content" style align="center">
+      <p>&copy; 2026 Çiçek Apartmanı / İstanbul / Maltepe / Aydınevler</p>
+    </div>
+  </footer>
+
+  <script src="sakin.js"></script>
+</body>
+</html>
