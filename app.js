@@ -645,7 +645,10 @@ function setupEventListeners() {
   document.getElementById('expenseMonthFilter').addEventListener('change', renderExpensesTable);
 
   // Expense Modals
-  document.getElementById('btnAddExpenseHeader').addEventListener('click', openAddExpenseModal);
+  const btnAddExpenseHeader = document.getElementById('btnAddExpenseHeader');
+  if (btnAddExpenseHeader) {
+    btnAddExpenseHeader.addEventListener('click', openAddExpenseModal);
+  }
   document.getElementById('btnAddExpenseSection').addEventListener('click', openAddExpenseModal);
   document.getElementById('closeExpenseModal').addEventListener('click', () => closeModal('expenseModal'));
   document.getElementById('cancelExpenseModal').addEventListener('click', () => closeModal('expenseModal'));
@@ -659,9 +662,12 @@ function setupEventListeners() {
   document.getElementById('saveSettingsBtn').addEventListener('click', handleSaveSettings);
 
   // Print Button
-  document.getElementById('btnPrint').addEventListener('click', () => {
-    window.print();
-  });
+  const btnPrint = document.getElementById('btnPrint');
+  if (btnPrint) {
+    btnPrint.addEventListener('click', () => {
+      window.print();
+    });
+  }
 
   // Reset Sample Data
   document.getElementById('btnResetSampleData').addEventListener('click', () => {
