@@ -97,7 +97,6 @@ function loadState() {
     } else {
       loadedState = JSON.parse(JSON.stringify(defaultState));
     }
-    loadedState.buildingTitle = 'Çiçek Apartmanı Yönetimi';
     
     // Manage Director Exemption logic
     const apt13 = loadedState.apartments?.find(a => a.id === 13);

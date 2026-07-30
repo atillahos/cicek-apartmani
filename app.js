@@ -105,7 +105,6 @@ function loadState() {
     } else {
       loadedState = JSON.parse(JSON.stringify(defaultState));
     }
-    loadedState.buildingTitle = 'Çiçek Apartmanı Yönetimi';
 
     // Hydrate Daire 13 (Yönetici - Aidattan Muaf)
     const apt13 = loadedState.apartments?.find(a => a.id === 13);
