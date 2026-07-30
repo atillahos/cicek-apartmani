@@ -18,6 +18,7 @@ const defaultState = {
   monthlyDues: 600,
   currentYear: 2026,
   previousYearTransfer: 24882.35,
+  announcement: "",
   extraCollections: [
     { id: 'ext-1785337506513', title: 'Bahçe & Boya', amountPerApt: 1430, payments: { 1: false, 2: true, 3: true, 4: true, 5: true, 6: true, 7: false, 8: false, 9: false, 10: true, 11: false, 12: false, 13: true, 14: false } }
   ],
@@ -100,6 +101,7 @@ function loadState() {
       loadedState = { ...defaultState, ...JSON.parse(saved) };
       if (!loadedState.extraCollections) loadedState.extraCollections = [];
       if (!loadedState.pdfReports) loadedState.pdfReports = [];
+      if (loadedState.announcement === undefined) loadedState.announcement = "";
     } else {
       loadedState = JSON.parse(JSON.stringify(defaultState));
     }
@@ -147,6 +149,11 @@ function initApp() {
   renderExtraCollections();
   renderExtraCardsView();
   renderPdfReports();
+  
+  const announcementArea = document.getElementById('announcementText');
+  if (announcementArea) {
+    announcementArea.value = state.announcement || "";
+  }
 }
 
 /**
@@ -707,6 +714,17 @@ function setupEventListeners() {
   if (cancelPdfModal) cancelPdfModal.addEventListener('click', () => closeModal('pdfModal'));
   const pdfForm = document.getElementById('pdfForm');
   if (pdfForm) pdfForm.addEventListener('submit', handleUploadPdf);
+
+  // Save Announcement
+  const btnSaveAnnouncement = document.getElementById('btnSaveAnnouncement');
+  if (btnSaveAnnouncement) {
+    btnSaveAnnouncement.addEventListener('click', () => {
+      const text = document.getElementById('announcementText').value.trim();
+      state.announcement = text;
+      saveState();
+      showToast('Duyuru başarıyla güncellendi.', 'success');
+    });
+  }
 }
 
 /**

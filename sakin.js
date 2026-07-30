@@ -15,6 +15,7 @@ const defaultState = {
   monthlyDues: 600,
   currentYear: 2026,
   previousYearTransfer: 24882.35,
+  announcement: "",
   extraCollections: [
     { id: 'ext-1785337506513', title: 'Bahçe & Boya', amountPerApt: 1430, payments: { 1: false, 2: true, 3: true, 4: true, 5: true, 6: true, 7: false, 8: false, 9: false, 10: true, 11: false, 12: false, 13: true, 14: false } }
   ],
@@ -92,6 +93,7 @@ function loadState() {
       loadedState = { ...defaultState, ...JSON.parse(saved) };
       if (!loadedState.extraCollections) loadedState.extraCollections = [];
       if (!loadedState.pdfReports) loadedState.pdfReports = [];
+      if (loadedState.announcement === undefined) loadedState.announcement = "";
     } else {
       loadedState = JSON.parse(JSON.stringify(defaultState));
     }
@@ -123,6 +125,7 @@ function initApp() {
   renderExtraCollections();
   renderExtraCardsView();
   renderPdfReports();
+  renderAnnouncement();
 }
 
 function updateHeaderInfo() {
@@ -468,4 +471,19 @@ function renderPdfReports() {
     `;
     tbody.appendChild(tr);
   });
+}
+
+function renderAnnouncement() {
+  const box = document.getElementById('announcementBox');
+  const display = document.getElementById('announcementDisplay');
+  if (!box || !display) return;
+
+  if (state.announcement && state.announcement.trim() !== "") {
+    display.innerText = state.announcement;
+    box.classList.remove('hidden');
+    box.style.display = 'block';
+  } else {
+    box.classList.add('hidden');
+    box.style.display = 'none';
+  }
 }

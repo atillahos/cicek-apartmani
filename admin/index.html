@@ -104,6 +104,23 @@
       </div>
     </section>
 
+    <!-- Duyuru Paneli -->
+    <section class="announcement-section card-box">
+      <div class="dues-header">
+        <div class="dues-title">
+          <h2><i class="fa-solid fa-bullhorn"></i> Apartman Duyuru Paneli</h2>
+          <p>Bina sakinlerine iletmek istediğiniz duyuruları buraya yazın (Boş bırakırsanız sakin sayfasında görünmez)</p>
+        </div>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+        <textarea id="announcementText" class="form-control" rows="3" placeholder="Örn: 2026 Yılı asansör bakım takvimi belirlenmiştir..." style="width: 100%; font-family: inherit; font-size: 0.95rem; resize: vertical; padding: 0.75rem; border-radius: 8px; border: 1.5px solid var(--border-color); background-color: var(--bg-body); color: var(--text-primary);"></textarea>
+        <div style="display: flex; justify-content: flex-end;">
+          <button class="btn btn-primary" id="btnSaveAnnouncement">
+            <i class="fa-solid fa-floppy-disk"></i> Duyuruyu Güncelle ve Yayınla
+          </button>
+        </div>
+      </div>
+    </section>
 
     <!-- Dues Table Section (Aidat Tablosu) -->
     <section class="dues-section card-box">
