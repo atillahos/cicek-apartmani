@@ -119,6 +119,13 @@ function loadState() {
 }
 
 function initApp() {
+  const filter = document.getElementById('expenseMonthFilter');
+  if (filter && !filter.dataset.initialized) {
+    const currentMonthNum = new Date().getMonth() + 1;
+    filter.value = String(currentMonthNum);
+    filter.dataset.initialized = 'true';
+  }
+
   updateHeaderInfo();
   renderDuesTable();
   renderGridViewCards();

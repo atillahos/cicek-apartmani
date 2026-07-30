@@ -168,36 +168,35 @@
 
     <!-- Expenses Section (Giderler Bölümü) -->
     <section class="expenses-section card-box">
-      <div class="expenses-header">
-        <div>
-          <h2><i class="fa-solid fa-arrow-circle-right"></i> Aylık Giderler Paneli</h2>
-          <p>Bina sakinleri için tüm kayıtlı harcama detayları</p>
+      <div class="dues-header" style="margin-bottom: 1rem;">
+        <div class="dues-title">
+          <h2><i class="fa-solid fa-arrow-circle-right"></i> Aylık Apartman Giderleri</h2>
+        </div>
+        <div class="dues-controls">
+          <div class="filter-group" style="display: flex; align-items: center; gap: 0.5rem; margin: 0;">
+            <label for="expenseMonthFilter" style="font-size: 0.9rem; font-weight: 600; color: var(--text-secondary); margin: 0;">Ay Filtresi:</label>
+            <select id="expenseMonthFilter" class="form-control" style="width: auto; padding: 0.4rem 0.8rem; border-radius: var(--radius-sm);">
+              <option value="all">Tüm Aylar</option>
+              <option value="1">Ocak</option>
+              <option value="2">Şubat</option>
+              <option value="3">Mart</option>
+              <option value="4">Nisan</option>
+              <option value="5">Mayıs</option>
+              <option value="6">Haziran</option>
+              <option value="7">Temmuz</option>
+              <option value="8">Ağustos</option>
+              <option value="9">Eylül</option>
+              <option value="10">Ekim</option>
+              <option value="11">Kasım</option>
+              <option value="12">Aralık</option>
+            </select>
+          </div>
         </div>
       </div>
 
       <div class="expenses-content-single">
         <!-- Expense List & Filters -->
         <div class="expenses-list-container">
-          <div class="expense-filters">
-            <div class="filter-group">
-              <label for="expenseMonthFilter">Ay Filtresi:</label>
-              <select id="expenseMonthFilter" class="form-control">
-                <option value="all">Tüm Aylar</option>
-                <option value="1">Ocak</option>
-                <option value="2">Şubat</option>
-                <option value="3">Mart</option>
-                <option value="4">Nisan</option>
-                <option value="5">Mayıs</option>
-                <option value="6">Haziran</option>
-                <option value="7">Temmuz</option>
-                <option value="8">Ağustos</option>
-                <option value="9">Eylül</option>
-                <option value="10">Ekim</option>
-                <option value="11">Kasım</option>
-                <option value="12">Aralık</option>
-              </select>
-            </div>
-          </div>
 
           <div class="table-responsive">
             <table class="expenses-table">
