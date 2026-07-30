@@ -91,6 +91,7 @@ function loadState() {
     if (saved) {
       loadedState = { ...defaultState, ...JSON.parse(saved) };
       if (!loadedState.extraCollections) loadedState.extraCollections = [];
+      if (!loadedState.pdfReports) loadedState.pdfReports = [];
     } else {
       loadedState = JSON.parse(JSON.stringify(defaultState));
     }
@@ -121,6 +122,7 @@ function initApp() {
   renderExpensesTable();
   renderExtraCollections();
   renderExtraCardsView();
+  renderPdfReports();
 }
 
 function updateHeaderInfo() {
@@ -432,5 +434,38 @@ function formatMoney(num) {
 function escapeHtml(str) {
   return String(str || '').replace(/[&<>"']/g, match => {
     return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[match];
+  });
+}
+
+function renderPdfReports() {
+  const tbody = document.getElementById('pdfTableBody');
+  const notice = document.getElementById('noPdfsNotice');
+
+  if (!tbody || !notice) return;
+
+  tbody.innerHTML = '';
+
+  const pdfs = state.pdfReports || [];
+
+  if (pdfs.length === 0) {
+    notice.classList.remove('hidden');
+    return;
+  } else {
+    notice.classList.add('hidden');
+  }
+
+  pdfs.forEach(pdf => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td><strong style="color: var(--primary);"><i class="fa-solid fa-file-pdf"></i> ${escapeHtml(pdf.title)}</strong></td>
+      <td>${pdf.date}</td>
+      <td>${pdf.size}</td>
+      <td style="text-align: center;">
+        <a href="${pdf.fileData}" download="${escapeHtml(pdf.title)}.pdf" class="btn btn-outline" style="padding: 0.3rem 0.6rem; font-size: 0.8rem; text-decoration: none; display: inline-flex; align-items: center; gap: 0.3rem;">
+          <i class="fa-solid fa-download"></i> İndir / Görüntüle
+        </a>
+      </td>
+    `;
+    tbody.appendChild(tr);
   });
 }

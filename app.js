@@ -99,6 +99,7 @@ function loadState() {
     if (saved) {
       loadedState = { ...defaultState, ...JSON.parse(saved) };
       if (!loadedState.extraCollections) loadedState.extraCollections = [];
+      if (!loadedState.pdfReports) loadedState.pdfReports = [];
     } else {
       loadedState = JSON.parse(JSON.stringify(defaultState));
     }
@@ -145,6 +146,7 @@ function initApp() {
   renderExpensesTable();
   renderExtraCollections();
   renderExtraCardsView();
+  renderPdfReports();
 }
 
 /**
@@ -690,6 +692,21 @@ function setupEventListeners() {
       btnTable.click();
     }
   });
+
+  // PDF Reports Modals
+  const btnOpenPdfModal = document.getElementById('btnOpenPdfModal');
+  if (btnOpenPdfModal) {
+    btnOpenPdfModal.addEventListener('click', () => {
+      document.getElementById('pdfForm').reset();
+      openModal('pdfModal');
+    });
+  }
+  const closePdfModal = document.getElementById('closePdfModal');
+  if (closePdfModal) closePdfModal.addEventListener('click', () => closeModal('pdfModal'));
+  const cancelPdfModal = document.getElementById('cancelPdfModal');
+  if (cancelPdfModal) cancelPdfModal.addEventListener('click', () => closeModal('pdfModal'));
+  const pdfForm = document.getElementById('pdfForm');
+  if (pdfForm) pdfForm.addEventListener('submit', handleUploadPdf);
 }
 
 /**
@@ -1121,3 +1138,106 @@ function escapeHtml(str) {
     return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[match];
   });
 }
+
+/**
+ * Render PDF Reports
+ */
+function renderPdfReports() {
+  const tbody = document.getElementById('pdfTableBody');
+  const notice = document.getElementById('noPdfsNotice');
+
+  if (!tbody || !notice) return;
+
+  tbody.innerHTML = '';
+
+  const pdfs = state.pdfReports || [];
+
+  if (pdfs.length === 0) {
+    notice.classList.remove('hidden');
+    return;
+  } else {
+    notice.classList.add('hidden');
+  }
+
+  pdfs.forEach(pdf => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td><strong style="color: var(--primary);"><i class="fa-solid fa-file-pdf"></i> ${escapeHtml(pdf.title)}</strong></td>
+      <td>${pdf.date}</td>
+      <td>${pdf.size}</td>
+      <td style="text-align: center; display: flex; gap: 0.5rem; justify-content: center; align-items: center;">
+        <a href="${pdf.fileData}" download="${escapeHtml(pdf.title)}.pdf" class="btn btn-outline" style="padding: 0.3rem 0.6rem; font-size: 0.8rem; text-decoration: none;">
+          <i class="fa-solid fa-download"></i> İndir
+        </a>
+        <button class="btn-delete-expense" onclick="deletePdfReport('${pdf.id}')" title="Raporu Sil" style="margin: 0;">
+          <i class="fa-solid fa-trash-can"></i>
+        </button>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+/**
+ * Handle PDF File Upload
+ */
+function handleUploadPdf(e) {
+  e.preventDefault();
+  const title = document.getElementById('pdfTitle').value.trim();
+  const fileInput = document.getElementById('pdfFile');
+  const file = fileInput.files[0];
+
+  if (!title || !file) {
+    showToast('Lütfen tüm alanları doldurun.', 'error');
+    return;
+  }
+
+  // File size check: 2MB limit
+  const maxBytes = 2 * 1024 * 1024; // 2MB
+  if (file.size > maxBytes) {
+    showToast('Dosya boyutu çok büyük (Maks. 2MB olmalıdır). Lütfen PDF\'i sıkıştırın.', 'error');
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.onload = function(event) {
+    const base64Data = event.target.result;
+    const formattedSize = (file.size / 1024).toFixed(1) + ' KB';
+    const uploadDate = new Date().toLocaleDateString('tr-TR');
+
+    const newPdf = {
+      id: 'pdf-' + Date.now(),
+      title,
+      date: uploadDate,
+      size: formattedSize,
+      fileData: base64Data
+    };
+
+    if (!state.pdfReports) state.pdfReports = [];
+    state.pdfReports.push(newPdf);
+
+    saveState();
+    renderPdfReports();
+    closeModal('pdfModal');
+    document.getElementById('pdfForm').reset();
+    showToast('PDF raporu başarıyla yüklendi.', 'success');
+  };
+
+  reader.onerror = function() {
+    showToast('Dosya okunurken bir hata oluştu.', 'error');
+  };
+
+  reader.readAsDataURL(file);
+}
+
+/**
+ * Delete PDF Report
+ */
+window.deletePdfReport = function(id) {
+  if (confirm('Bu raporu silmek istediğinize emin misiniz?')) {
+    state.pdfReports = (state.pdfReports || []).filter(p => p.id !== id);
+    saveState();
+    renderPdfReports();
+    showToast('Rapor başarıyla silindi.', 'info');
+  }
+};

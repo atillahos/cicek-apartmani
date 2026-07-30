@@ -206,6 +206,36 @@
       </div>
     </section>
 
+    <!-- PDF Raporları Section -->
+    <section class="pdf-reports-section card-box">
+      <div class="dues-header">
+        <div class="dues-title">
+          <h2><i class="fa-solid fa-file-pdf"></i> Geçmiş Yıllar Rapor Arşivi (PDF)</h2>
+          <p>Eski yıllara ait mali raporlar ve genel kurul kararları</p>
+        </div>
+      </div>
+
+      <div class="table-responsive">
+        <table class="expenses-table">
+          <thead>
+            <tr>
+              <th>Rapor Başlığı</th>
+              <th>Yükleme Tarihi</th>
+              <th>Dosya Boyutu</th>
+              <th style="width: 140px; text-align: center;">Görüntüle</th>
+            </tr>
+          </thead>
+          <tbody id="pdfTableBody">
+            <!-- JS Populated PDF Rows -->
+          </tbody>
+        </table>
+        <div id="noPdfsNotice" class="no-data-notice hidden">
+          <i class="fa-solid fa-file-circle-question"></i>
+          <p>Henüz yüklenmiş bir geçmiş yıl raporu bulunmuyor.</p>
+        </div>
+      </div>
+    </section>
+
   </main>
 
   <!-- Footer -->
