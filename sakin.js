@@ -11,7 +11,7 @@ const MONTH_NAMES = [
 ];
 
 const defaultState = {
-  buildingTitle: 'Çiçek Apartmanı 2026',
+  buildingTitle: 'Çiçek Apartmanı Yönetimi',
   monthlyDues: 600,
   currentYear: 2026,
   previousYearTransfer: 24882.35,
@@ -97,6 +97,7 @@ function loadState() {
     } else {
       loadedState = JSON.parse(JSON.stringify(defaultState));
     }
+    loadedState.buildingTitle = 'Çiçek Apartmanı Yönetimi';
     
     // Manage Director Exemption logic
     const apt13 = loadedState.apartments?.find(a => a.id === 13);
@@ -126,6 +127,15 @@ function initApp() {
   renderExtraCardsView();
   renderPdfReports();
   renderAnnouncement();
+
+  // Load Theme
+  const savedTheme = localStorage.getItem('theme') || 'light';
+  if (savedTheme === 'dark') {
+    document.body.classList.add('dark-theme');
+  } else {
+    document.body.classList.remove('dark-theme');
+  }
+  updateThemeIcon();
 }
 
 function updateHeaderInfo() {
@@ -404,6 +414,12 @@ function setupEventListeners() {
   // Responsive Layout detection for views on load & resize
   applyViewsByScreenWidth();
   window.addEventListener('resize', applyViewsByScreenWidth);
+
+  // Theme Toggle
+  const btnThemeToggle = document.getElementById('btnThemeToggle');
+  if (btnThemeToggle) {
+    btnThemeToggle.addEventListener('click', toggleTheme);
+  }
 }
 
 function applyViewsByScreenWidth() {
@@ -485,5 +501,26 @@ function renderAnnouncement() {
   } else {
     box.classList.add('hidden');
     box.style.display = 'none';
+  }
+}
+
+function toggleTheme() {
+  if (document.body.classList.contains('dark-theme')) {
+    document.body.classList.remove('dark-theme');
+    localStorage.setItem('theme', 'light');
+  } else {
+    document.body.classList.add('dark-theme');
+    localStorage.setItem('theme', 'dark');
+  }
+  updateThemeIcon();
+}
+
+function updateThemeIcon() {
+  const icon = document.querySelector('#btnThemeToggle i');
+  if (!icon) return;
+  if (document.body.classList.contains('dark-theme')) {
+    icon.className = 'fa-solid fa-sun';
+  } else {
+    icon.className = 'fa-solid fa-moon';
   }
 }

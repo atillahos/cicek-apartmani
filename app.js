@@ -14,7 +14,7 @@ const MONTH_NAMES = [
 
 // Default Initial State (Used if localStorage is empty)
 const defaultState = {
-  buildingTitle: 'Çiçek Apartmanı 2026',
+  buildingTitle: 'Çiçek Apartmanı Yönetimi',
   monthlyDues: 600,
   currentYear: 2026,
   previousYearTransfer: 24882.35,
@@ -105,6 +105,7 @@ function loadState() {
     } else {
       loadedState = JSON.parse(JSON.stringify(defaultState));
     }
+    loadedState.buildingTitle = 'Çiçek Apartmanı Yönetimi';
 
     // Hydrate Daire 13 (Yönetici - Aidattan Muaf)
     const apt13 = loadedState.apartments?.find(a => a.id === 13);
@@ -154,6 +155,15 @@ function initApp() {
   if (announcementArea) {
     announcementArea.value = state.announcement || "";
   }
+
+  // Load Theme
+  const savedTheme = localStorage.getItem('theme') || 'light';
+  if (savedTheme === 'dark') {
+    document.body.classList.add('dark-theme');
+  } else {
+    document.body.classList.remove('dark-theme');
+  }
+  updateThemeIcon();
 }
 
 /**
@@ -161,7 +171,10 @@ function initApp() {
  */
 function updateHeaderInfo() {
   document.getElementById('buildingTitleDisplay').innerText = state.buildingTitle;
-  document.getElementById('currentYearBadge').innerText = `${state.currentYear} Yılı Özeti`;
+  const badge = document.getElementById('currentYearBadge');
+  if (badge) {
+    badge.innerText = `${state.currentYear} Yılı Özeti`;
+  }
   document.getElementById('monthlyDuesDisplay').innerText = `${formatMoney(state.monthlyDues)} ₺`;
 }
 
@@ -725,6 +738,12 @@ function setupEventListeners() {
       showToast('Duyuru başarıyla güncellendi.', 'success');
     });
   }
+
+  // Theme Toggle
+  const btnThemeToggle = document.getElementById('btnThemeToggle');
+  if (btnThemeToggle) {
+    btnThemeToggle.addEventListener('click', toggleTheme);
+  }
 }
 
 /**
@@ -1259,3 +1278,27 @@ window.deletePdfReport = function(id) {
     showToast('Rapor başarıyla silindi.', 'info');
   }
 };
+
+/**
+ * Toggle Dark/Light Theme
+ */
+function toggleTheme() {
+  if (document.body.classList.contains('dark-theme')) {
+    document.body.classList.remove('dark-theme');
+    localStorage.setItem('theme', 'light');
+  } else {
+    document.body.classList.add('dark-theme');
+    localStorage.setItem('theme', 'dark');
+  }
+  updateThemeIcon();
+}
+
+function updateThemeIcon() {
+  const icon = document.querySelector('#btnThemeToggle i');
+  if (!icon) return;
+  if (document.body.classList.contains('dark-theme')) {
+    icon.className = 'fa-solid fa-sun';
+  } else {
+    icon.className = 'fa-solid fa-moon';
+  }
+}
