@@ -669,19 +669,11 @@ function setupEventListeners() {
     });
   }
 
-  // Reset Sample Data
-  document.getElementById('btnResetSampleData').addEventListener('click', () => {
-    if (confirm('Tüm verileri varsayılan örnek verilere sıfırlamak istediğinize emin misiniz?')) {
-      state = JSON.parse(JSON.stringify(defaultState));
-      pendingExtraPayments = null;
-      pendingAidatPayments = null;
-      saveState();
-      initApp();
-      updateAidatSaveBar();
-      updateExtraSaveBar();
-      showToast('Varsayılan veriler başarıyla geri yüklendi.', 'success');
-    }
-  });
+  // Sistemi Sıfırla
+  const btnResetSystem = document.getElementById('btnResetSystem');
+  if (btnResetSystem) {
+    btnResetSystem.addEventListener('click', handleResetSystem);
+  }
 
   // Extra Collections Modals
   document.getElementById('btnOpenExtraModal').addEventListener('click', () => {
@@ -1306,5 +1298,51 @@ function updateThemeIcon() {
     icon.className = 'fa-solid fa-sun';
   } else {
     icon.className = 'fa-solid fa-moon';
+  }
+}
+
+/**
+ * Reset System for New Year
+ */
+function handleResetSystem() {
+  const passwordInput = prompt("Sistemi yeni yıl için sıfırlamak üzere lütfen yönetici parolasını girin:");
+  
+  if (passwordInput === null) return; // Canceled
+
+  const ADMIN_PASS = 'uiz@=x*8C42oa^V1)D8c*Gn';
+  if (passwordInput !== ADMIN_PASS) {
+    showToast("Hatalı parola! Sıfırlama işlemi iptal edildi.", "error");
+    return;
+  }
+
+  if (confirm("DİKKAT: Bu işlem tüm aidat ödemelerini, ek aidat tablolarını ve aylık giderleri KALICI OLARAK SİLECEKTİR. Sakin isimleri ve PDF rapor arşiviniz korunacaktır. Devam etmek istiyor musunuz?")) {
+    // 1. Clear dues payments (Except Manager Room 13 who stays exempt and checked)
+    state.apartments.forEach(apt => {
+      apt.payments = {};
+      if (apt.id === 13) {
+        apt.isExempt = true;
+        for (let m = 1; m <= 12; m++) {
+          apt.payments[m] = true;
+        }
+      }
+    });
+
+    // 2. Clear extra collections
+    state.extraCollections = [];
+
+    // 3. Clear monthly expenses
+    state.expenses = [];
+
+    // Reset pending modifications
+    pendingExtraPayments = null;
+    pendingAidatPayments = null;
+
+    saveState();
+    initApp();
+    updateAidatSaveBar();
+    updateExtraSaveBar();
+    closeModal('settingsModal');
+    
+    showToast("Sistem başarıyla sıfırlandı. Yeni yılınız kutlu olsun!", "success");
   }
 }
