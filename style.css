@@ -826,7 +826,7 @@ p.subtitle {
 }
 
 .expenses-table th {
-  background-color: #f1f5f9;
+  background-color: var(--bg-subtle);
   font-weight: 700;
 }
 
