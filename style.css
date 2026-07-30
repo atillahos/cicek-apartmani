@@ -67,6 +67,10 @@ body.dark-theme {
   --warning-light: #78350f;
 }
 
+body.dark-theme .kasa-main {
+  background: linear-gradient(135deg, var(--bg-card) 0%, #1e1b4b 100%);
+}
+
 /* Base Resets */
 * {
   box-sizing: border-box;
@@ -508,7 +512,7 @@ p.subtitle {
 }
 
 .dues-table th {
-  background-color: #f1f5f9;
+  background-color: var(--bg-subtle);
   font-weight: 700;
   color: var(--text-primary);
 }
@@ -532,7 +536,7 @@ p.subtitle {
 }
 
 .dues-table th.sticky-col {
-  background-color: #f1f5f9;
+  background-color: var(--bg-subtle);
 }
 
 .occupant-sub {
