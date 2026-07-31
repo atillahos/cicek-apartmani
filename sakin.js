@@ -17,6 +17,7 @@ const defaultState = {
   previousYearTransfer: 0,
   announcement: "",
   lastUpdated: "31.07.2026 14:15",
+  dbUrl: "https://cicek-apartmani-default-rtdb.europe-west1.firebasedatabase.app",
   extraCollections: [],
   apartments: [
     { id: 1, occupant: '', payments: {}, isExempt: false },
@@ -137,6 +138,7 @@ function loadState() {
       if (!loadedState.extraCollections) loadedState.extraCollections = [];
       if (!loadedState.pdfReports) loadedState.pdfReports = [];
       if (loadedState.announcement === undefined) loadedState.announcement = "";
+      if (!loadedState.dbUrl) loadedState.dbUrl = defaultState.dbUrl;
     } else if (oldSaved) {
       const parsedOld = JSON.parse(oldSaved);
       const hasActualData = parsedOld.apartments && parsedOld.apartments[0] && parsedOld.apartments[0].occupant === 'Hülya KAPLAN';
@@ -180,8 +182,14 @@ function saveStateLocally() {
 }
 
 async function syncWithCloudDatabase() {
+  if (!state.dbUrl) return;
+  let url = state.dbUrl;
+  if (!url.endsWith('/state.json')) {
+    if (url.endsWith('/')) url += 'state.json';
+    else url += '/state.json';
+  }
   try {
-    const response = await fetch('https://cicek-apartmani-db-default-rtdb.europe-west1.firebasedatabase.app/state.json');
+    const response = await fetch(url);
     if (response.ok) {
       const cloudState = await response.json();
       if (cloudState && cloudState.lastUpdated) {
