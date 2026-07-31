@@ -3,7 +3,7 @@
  * Real-time updates via 'storage' event listener
  */
 
-const STORAGE_KEY = 'apartman_yonetimi_state_v1';
+const STORAGE_KEY = 'cicek_apartmani_state_v2';
 
 const MONTH_NAMES = [
   'Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran',

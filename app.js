@@ -4,7 +4,7 @@
  */
 
 // Global State Key for LocalStorage
-const STORAGE_KEY = 'apartman_yonetimi_state_v1';
+const STORAGE_KEY = 'cicek_apartmani_state_v2';
 
 // Month Names Constants
 const MONTH_NAMES = [
