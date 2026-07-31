@@ -184,7 +184,10 @@ function updateHeaderInfo() {
   if (badge) {
     badge.innerText = `${state.currentYear} Yılı Özeti`;
   }
-  document.getElementById('monthlyDuesDisplay').innerText = `${formatMoney(state.monthlyDues)} ₺`;
+  const duesDisplay = document.getElementById('monthlyDuesDisplay');
+  if (duesDisplay) {
+    duesDisplay.innerText = `${formatMoney(state.monthlyDues)} ₺`;
+  }
 }
 
 /**

@@ -147,7 +147,10 @@ function initApp() {
 
 function updateHeaderInfo() {
   document.getElementById('buildingTitleDisplay').innerText = state.buildingTitle;
-  document.getElementById('monthlyDuesDisplay').innerText = `${formatMoney(state.monthlyDues)} ₺`;
+  const duesDisplay = document.getElementById('monthlyDuesDisplay');
+  if (duesDisplay) {
+    duesDisplay.innerText = `${formatMoney(state.monthlyDues)} ₺`;
+  }
 }
 
 
