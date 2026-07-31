@@ -88,12 +88,24 @@ window.addEventListener('storage', (e) => {
 function loadState() {
   try {
     const saved = localStorage.getItem(STORAGE_KEY);
+    const oldSaved = localStorage.getItem('apartman_yonetimi_state_v1');
     let loadedState;
+    
     if (saved) {
       loadedState = { ...defaultState, ...JSON.parse(saved) };
       if (!loadedState.extraCollections) loadedState.extraCollections = [];
       if (!loadedState.pdfReports) loadedState.pdfReports = [];
       if (loadedState.announcement === undefined) loadedState.announcement = "";
+    } else if (oldSaved) {
+      const parsedOld = JSON.parse(oldSaved);
+      // Migrate only if it contains the actual production data (Hülya KAPLAN check)
+      const hasActualData = parsedOld.apartments && parsedOld.apartments[0] && parsedOld.apartments[0].occupant === 'Hülya KAPLAN';
+      if (hasActualData) {
+        loadedState = { ...defaultState, ...parsedOld };
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(loadedState));
+      } else {
+        loadedState = JSON.parse(JSON.stringify(defaultState));
+      }
     } else {
       loadedState = JSON.parse(JSON.stringify(defaultState));
     }
