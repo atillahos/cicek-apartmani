@@ -76,6 +76,18 @@ function loadState() {
     const oldSaved = localStorage.getItem('apartman_yonetimi_state_v1');
     let loadedState;
     
+    // Force recovery immediately if oldSaved has actual data and current saved state is completely empty
+    if (oldSaved && (!saved || JSON.parse(saved).monthlyDues === 0)) {
+      const parsedOld = JSON.parse(oldSaved);
+      const hasActualData = parsedOld.apartments && parsedOld.apartments[0] && parsedOld.apartments[0].occupant === 'Hülya KAPLAN';
+      if (hasActualData) {
+        loadedState = { ...defaultState, ...parsedOld };
+        loadedState.lastUpdated = defaultState.lastUpdated; // ensure we are up to date
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(loadedState));
+        return loadedState;
+      }
+    }
+
     // Recovery check: did they have actual edits in the old database that are missing in the new one?
     let recoveredState = null;
     if (oldSaved) {
