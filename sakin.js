@@ -16,6 +16,7 @@ const defaultState = {
   currentYear: 2026,
   previousYearTransfer: 24882.35,
   announcement: "",
+  lastUpdated: "31.07.2026 14:02",
   extraCollections: [
     { id: 'ext-1785337506513', title: 'Bahçe & Boya', amountPerApt: 1430, payments: { 1: false, 2: true, 3: true, 4: true, 5: true, 6: true, 7: false, 8: false, 9: false, 10: true, 11: false, 12: false, 13: true, 14: false } }
   ],
@@ -85,6 +86,22 @@ window.addEventListener('storage', (e) => {
   }
 });
 
+function parseDateTime(str) {
+  if (!str) return new Date(0);
+  const parts = str.split(' ');
+  if (parts.length !== 2) return new Date(0);
+  const dateParts = parts[0].split('.');
+  const timeParts = parts[1].split(':');
+  if (dateParts.length !== 3 || timeParts.length !== 2) return new Date(0);
+  return new Date(
+    parseInt(dateParts[2], 10),
+    parseInt(dateParts[1], 10) - 1,
+    parseInt(dateParts[0], 10),
+    parseInt(timeParts[0], 10),
+    parseInt(timeParts[1], 10)
+  );
+}
+
 function loadState() {
   try {
     const saved = localStorage.getItem(STORAGE_KEY);
@@ -92,22 +109,37 @@ function loadState() {
     let loadedState;
     
     if (saved) {
-      loadedState = { ...defaultState, ...JSON.parse(saved) };
+      const parsedSaved = JSON.parse(saved);
+      const savedDate = parseDateTime(parsedSaved.lastUpdated);
+      const defaultDate = parseDateTime(defaultState.lastUpdated);
+      
+      if (defaultDate > savedDate) {
+        // Code has a newer update (e.g. static data synced via github)
+        loadedState = JSON.parse(JSON.stringify(defaultState));
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(loadedState));
+      } else {
+        loadedState = { ...defaultState, ...parsedSaved };
+      }
       if (!loadedState.extraCollections) loadedState.extraCollections = [];
       if (!loadedState.pdfReports) loadedState.pdfReports = [];
       if (loadedState.announcement === undefined) loadedState.announcement = "";
     } else if (oldSaved) {
       const parsedOld = JSON.parse(oldSaved);
-      // Migrate only if it contains the actual production data (Hülya KAPLAN check)
+      // Migrate only if it contains actual data and is newer than defaultState
       const hasActualData = parsedOld.apartments && parsedOld.apartments[0] && parsedOld.apartments[0].occupant === 'Hülya KAPLAN';
-      if (hasActualData) {
+      const oldSavedDate = parseDateTime(parsedOld.lastUpdated);
+      const defaultDate = parseDateTime(defaultState.lastUpdated);
+      
+      if (hasActualData && oldSavedDate >= defaultDate) {
         loadedState = { ...defaultState, ...parsedOld };
         localStorage.setItem(STORAGE_KEY, JSON.stringify(loadedState));
       } else {
         loadedState = JSON.parse(JSON.stringify(defaultState));
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(loadedState));
       }
     } else {
       loadedState = JSON.parse(JSON.stringify(defaultState));
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(loadedState));
     }
     
     // Manage Director Exemption logic
