@@ -16,7 +16,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
   <!-- FontAwesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../style.css?v=3">
 </head>
 <body>
 
@@ -458,6 +458,21 @@
           </div>
         </div>
 
+        <!-- Database Backup / Restore -->
+        <div class="settings-section" style="margin-top: 1.5rem; border-top: 1px solid var(--border-color); padding-top: 1.5rem;">
+          <h4>Veri Yedekleme & Aktarma</h4>
+          <p class="subtitle-sm">Firefox'ta girdiğiniz güncel verileri diğer bilgisayarlara veya tarayıcılara taşımak için yedek dosyası (.json) oluşturup yükleyebilirsiniz:</p>
+          <div style="display: flex; gap: 1rem; margin-top: 0.75rem; flex-wrap: wrap;">
+            <button type="button" class="btn btn-outline" id="btnExportBackup" style="flex: 1; min-width: 150px;">
+              <i class="fa-solid fa-download"></i> Dışa Aktar (.JSON)
+            </button>
+            <button type="button" class="btn btn-outline" id="btnImportBackupClick" style="flex: 1; min-width: 150px;">
+              <i class="fa-solid fa-upload"></i> İçe Aktar (.JSON)
+            </button>
+            <input type="file" id="inputImportBackup" accept=".json" style="display: none;">
+          </div>
+        </div>
+
       </div>
       <div class="modal-footer" style="display: flex; justify-content: space-between; align-items: center; width: 100%; gap: 1rem; flex-wrap: wrap;">
         <button type="button" class="btn btn-outline" id="btnResetSystem" style="color: var(--danger); border-color: var(--danger);">
@@ -530,7 +545,7 @@
   <!-- Notification Toast -->
   <div class="toast-container" id="toastContainer"></div>
 
-  <script src="../app.js"></script>
+  <script src="../app.js?v=3"></script>
   <script>
     // Logout button
     document.getElementById('btnLogout').addEventListener('click', function () {
