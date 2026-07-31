@@ -383,7 +383,8 @@ function renderDuesTable() {
     if (!matchesSearch) return;
 
     let aptPaidCount = 0;
-    let unpaidUpToCurrent = 0;
+    let debtMonths = 0;
+    let creditMonths = 0;
     const tr = document.createElement('tr');
 
     // Sticky First Column (Daire No / Occupant Name)
@@ -407,9 +408,12 @@ function renderDuesTable() {
         aptPaidCount++;
         if (!apt.isExempt) {
           monthTotals[m]++;
+          if (m > currentMonth) {
+            creditMonths++;
+          }
         }
       } else if (m <= currentMonth && !apt.isExempt) {
-        unpaidUpToCurrent++;
+        debtMonths++;
       }
 
       const tdMonth = document.createElement('td');
@@ -435,15 +439,17 @@ function renderDuesTable() {
       tr.appendChild(tdMonth);
     }
 
-    // Row Summary (Güncel Borç: Current month included unpaid debt)
+    // Row Summary (Güncel Borç: Current month included unpaid debt, future prepayments shown as positive)
     const tdRowSummary = document.createElement('td');
     tdRowSummary.className = 'col-summary';
     if (apt.isExempt) {
       tdRowSummary.innerHTML = `<span style="color: var(--text-muted); font-weight: 600;">0 ₺ (Muaf)</span>`;
     } else {
-      const aptDebt = unpaidUpToCurrent * state.monthlyDues;
-      if (aptDebt > 0) {
-        tdRowSummary.innerHTML = `<strong style="color: var(--danger);">${formatMoney(aptDebt)} ₺</strong>`;
+      const netDebt = (debtMonths - creditMonths) * state.monthlyDues;
+      if (netDebt > 0) {
+        tdRowSummary.innerHTML = `<strong style="color: var(--danger);">${formatMoney(netDebt)} ₺</strong>`;
+      } else if (netDebt < 0) {
+        tdRowSummary.innerHTML = `<strong style="color: var(--success);">+${formatMoney(Math.abs(netDebt))} ₺</strong>`;
       } else {
         tdRowSummary.innerHTML = `<span style="color: var(--success); font-weight: 600;">0 ₺</span>`;
       }
@@ -472,7 +478,8 @@ function renderGridViewCards() {
     if (!matchesSearch) return;
 
     let aptPaidCount = 0;
-    let unpaidUpToCurrent = 0;
+    let debtMonths = 0;
+    let creditMonths = 0;
     const card = document.createElement('div');
     card.className = 'apt-card';
 
@@ -483,8 +490,11 @@ function renderGridViewCards() {
       const isPaid = apt.isExempt ? true : effectivePayments[m];
       if (isPaid) {
         aptPaidCount++;
+        if (m > currentMonth && !apt.isExempt) {
+          creditMonths++;
+        }
       } else if (m <= currentMonth && !apt.isExempt) {
-        unpaidUpToCurrent++;
+        debtMonths++;
       }
 
       const badgeClass = apt.isExempt ? 'exempt' : (isPaid ? 'paid' : '');
@@ -496,7 +506,24 @@ function renderGridViewCards() {
       `;
     }
 
-    const aptDebt = apt.isExempt ? 0 : unpaidUpToCurrent * state.monthlyDues;
+    const netDebt = apt.isExempt ? 0 : (debtMonths - creditMonths) * state.monthlyDues;
+
+    let badgeStyle = '';
+    let badgeText = '';
+    if (apt.isExempt) {
+      badgeStyle = 'color:var(--primary); font-weight:700;';
+      badgeText = 'Aidattan Muaf';
+    } else if (netDebt > 0) {
+      badgeStyle = 'color:var(--danger); font-weight:700;';
+      const unpaidCount = debtMonths - creditMonths;
+      badgeText = `${unpaidCount} Ay Borcu Var`;
+    } else if (netDebt < 0) {
+      badgeStyle = 'color:var(--success); font-weight:700;';
+      badgeText = 'Fazla Ödeme (Alacak)';
+    } else {
+      badgeStyle = 'color:var(--success); font-weight:700;';
+      badgeText = 'Borçsuz';
+    }
 
     card.innerHTML = `
       <div class="apt-card-header">
@@ -504,14 +531,16 @@ function renderGridViewCards() {
           <div class="apt-card-title">Daire ${apt.id} ${apt.isExempt ? '(Yönetici)' : ''}</div>
           <div class="apt-card-occupant">${escapeHtml(apt.occupant || 'Sakin Belirtilmedi')}</div>
         </div>
-        <span class="badge badge-light" style="${apt.isExempt ? 'color:var(--primary); font-weight:700;' : (unpaidUpToCurrent > 0 ? 'color:var(--danger); font-weight:700;' : '')}">${apt.isExempt ? 'Aidattan Muaf' : (unpaidUpToCurrent === 0 ? 'Borçsuz' : unpaidUpToCurrent + ' Ay Borcu Var')}</span>
+        <span class="badge badge-light" style="${badgeStyle}">${badgeText}</span>
       </div>
       <div class="apt-months-grid">
         ${monthsGridHtml}
       </div>
       <div class="apt-card-footer">
         <span>Güncel Borç:</span>
-        <span style="color:${apt.isExempt ? 'var(--text-muted)' : (aptDebt > 0 ? 'var(--danger)' : 'var(--success)')}; font-weight:700; font-size:0.95rem;">${apt.isExempt ? '0 ₺ (Muaf)' : formatMoney(aptDebt) + ' ₺'}</span>
+        <span style="color:${apt.isExempt ? 'var(--text-muted)' : (netDebt > 0 ? 'var(--danger)' : 'var(--success)')}; font-weight:700; font-size:0.95rem;">
+          ${apt.isExempt ? '0 ₺ (Muaf)' : (netDebt < 0 ? `+${formatMoney(Math.abs(netDebt))} ₺` : `${formatMoney(netDebt)} ₺`)}
+        </span>
       </div>
     `;
 
