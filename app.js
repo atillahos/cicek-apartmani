@@ -1046,7 +1046,7 @@ function renderExtraCardsView() {
     card.innerHTML = `
       <div class="extra-apt-card-header">
         <div>
-          <div class="apt-card-title">Daire ${apt.id}${apt.isExempt ? ' <span style="font-size:0.7rem; color:var(--primary); font-weight:700;">(Muaf)</span>' : ''}</div>
+          <div class="apt-card-title">Daire ${apt.id}</div>
           <div class="apt-card-occupant">${escapeHtml(apt.occupant || 'Sakin Belirtilmedi')}</div>
         </div>
         <span class="badge badge-light" style="${paidCountForApt === collections.length ? 'color:var(--success); font-weight:700;' : paidCountForApt > 0 ? 'color:var(--warning); font-weight:700;' : 'color:var(--text-muted);'}">${paidCountForApt}/${collections.length} Ödeme</span>
