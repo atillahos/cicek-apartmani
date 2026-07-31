@@ -131,7 +131,16 @@ function loadState() {
  */
 function saveState() {
   try {
+    const now = new Date();
+    const day = String(now.getDate()).padStart(2, '0');
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const year = now.getFullYear();
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    state.lastUpdated = `${day}.${month}.${year} ${hours}:${minutes}`;
+
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    updateLastUpdatedDisplay();
   } catch (e) {
     console.error('LocalStorage save error:', e);
   }
@@ -149,6 +158,7 @@ function initApp() {
   renderExtraCollections();
   renderExtraCardsView();
   renderPdfReports();
+  updateLastUpdatedDisplay();
   
   const announcementArea = document.getElementById('announcementText');
   if (announcementArea) {
@@ -655,7 +665,10 @@ function setupEventListeners() {
 
   // Settings Modal
   document.getElementById('btnSettings').addEventListener('click', openSettingsModal);
-  document.getElementById('btnEditDues').addEventListener('click', openSettingsModal);
+  const btnEditDues = document.getElementById('btnEditDues');
+  if (btnEditDues) {
+    btnEditDues.addEventListener('click', openSettingsModal);
+  }
   document.getElementById('closeSettingsModal').addEventListener('click', () => closeModal('settingsModal'));
   document.getElementById('cancelSettingsModal').addEventListener('click', () => closeModal('settingsModal'));
   document.getElementById('saveSettingsBtn').addEventListener('click', handleSaveSettings);
@@ -1343,5 +1356,12 @@ function handleResetSystem() {
     closeModal('settingsModal');
     
     showToast("Sistem başarıyla sıfırlandı. Yeni yılınız kutlu olsun!", "success");
+  }
+}
+
+function updateLastUpdatedDisplay() {
+  const display = document.getElementById('lastUpdatedDisplay');
+  if (display) {
+    display.innerText = state.lastUpdated ? `Son Güncelleme: ${state.lastUpdated}` : 'Son Güncelleme: -';
   }
 }

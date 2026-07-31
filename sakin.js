@@ -133,6 +133,7 @@ function initApp() {
   renderExtraCardsView();
   renderPdfReports();
   renderAnnouncement();
+  updateLastUpdatedDisplay();
 
   // Load Theme
   const savedTheme = localStorage.getItem('theme') || 'light';
@@ -528,5 +529,12 @@ function updateThemeIcon() {
     icon.className = 'fa-solid fa-sun';
   } else {
     icon.className = 'fa-solid fa-moon';
+  }
+}
+
+function updateLastUpdatedDisplay() {
+  const display = document.getElementById('lastUpdatedDisplay');
+  if (display) {
+    display.innerText = state.lastUpdated ? `Son Güncelleme: ${state.lastUpdated}` : 'Son Güncelleme: -';
   }
 }
