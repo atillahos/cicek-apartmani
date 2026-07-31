@@ -540,4 +540,8 @@ function updateLastUpdatedDisplay() {
   if (display) {
     display.innerText = state.lastUpdated ? `Son Güncelleme: ${state.lastUpdated}` : 'Son Güncelleme: -';
   }
+  const displayExtra = document.getElementById('lastUpdatedDisplayExtra');
+  if (displayExtra) {
+    displayExtra.innerText = state.lastUpdated ? `Son Güncelleme: ${state.lastUpdated}` : 'Son Güncelleme: -';
+  }
 }

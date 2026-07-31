@@ -187,11 +187,14 @@
 
     <!-- Ek Ödemeler Section (Ek Bütçe Toplama) -->
     <section class="extra-collections-section card-box">
-      <div class="dues-header">
+      <div class="dues-header" style="margin-bottom: 1rem;">
         <div class="dues-title">
           <h2><i class="fa-solid fa-table-cells"></i> Ek Aidat Takip Tablosu</h2>
         </div>
-        <div class="dues-controls">
+        <div class="dues-controls" style="gap: 1.25rem; flex-wrap: wrap;">
+          <div class="dues-rate-info" style="display: flex; align-items: center; border: none; padding: 0; background: transparent;">
+            <span style="font-size: 0.8rem; color: var(--text-muted);" id="lastUpdatedDisplayExtra">Son Güncelleme: -</span>
+          </div>
           <button class="btn btn-primary" id="btnOpenExtraModal">
             <i class="fa-solid fa-plus"></i> Yeni Ek Ödeme Talebi
           </button>
