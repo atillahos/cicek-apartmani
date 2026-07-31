@@ -176,8 +176,48 @@ function loadState() {
   return JSON.parse(JSON.stringify(defaultState));
 }
 
+function saveStateLocally() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  } catch (e) {
+    console.error('LocalStorage save error:', e);
+  }
+}
+
+function saveToCloudDatabase() {
+  fetch('https://cicek-apartmani-db-default-rtdb.europe-west1.firebasedatabase.app/state.json', {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(state)
+  }).catch(err => console.error('Cloud save error:', err));
+}
+
+async function syncWithCloudDatabase() {
+  try {
+    const response = await fetch('https://cicek-apartmani-db-default-rtdb.europe-west1.firebasedatabase.app/state.json');
+    if (response.ok) {
+      const cloudState = await response.json();
+      if (cloudState && cloudState.lastUpdated) {
+        const localDate = parseDateTime(state.lastUpdated);
+        const cloudDate = parseDateTime(cloudState.lastUpdated);
+        if (cloudDate > localDate) {
+          state = { ...defaultState, ...cloudState };
+          saveStateLocally();
+          initApp();
+        } else if (localDate > cloudDate) {
+          saveToCloudDatabase();
+        }
+      } else {
+        saveToCloudDatabase();
+      }
+    }
+  } catch (e) {
+    console.error("Cloud sync error:", e);
+  }
+}
+
 /**
- * Save Current State to LocalStorage
+ * Save Current State to LocalStorage and Cloud
  */
 function saveState() {
   try {
@@ -189,8 +229,9 @@ function saveState() {
     const minutes = String(now.getMinutes()).padStart(2, '0');
     state.lastUpdated = `${day}.${month}.${year} ${hours}:${minutes}`;
 
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    saveStateLocally();
     updateLastUpdatedDisplay();
+    saveToCloudDatabase();
   } catch (e) {
     console.error('LocalStorage save error:', e);
   }
@@ -199,6 +240,7 @@ function saveState() {
 /**
  * Primary Initialization
  */
+let isFirstSync = true;
 function initApp() {
   updateHeaderInfo();
   renderKasaSummary();
@@ -213,6 +255,11 @@ function initApp() {
   const announcementArea = document.getElementById('announcementText');
   if (announcementArea) {
     announcementArea.value = state.announcement || "";
+  }
+
+  if (isFirstSync) {
+    isFirstSync = false;
+    syncWithCloudDatabase();
   }
 
   // Load Theme
