@@ -108,7 +108,41 @@ function loadState() {
     const oldSaved = localStorage.getItem('apartman_yonetimi_state_v1');
     let loadedState;
     
-    if (saved) {
+    // Recovery check: did they have actual edits in the old database that are missing in the new one?
+    let recoveredState = null;
+    if (oldSaved) {
+      const parsedOld = JSON.parse(oldSaved);
+      const hasActualEdits = (parsedOld.pdfReports && parsedOld.pdfReports.length > 0) || 
+                             (parsedOld.expenses && parsedOld.expenses.length > defaultState.expenses.length);
+      
+      if (hasActualEdits) {
+        let needsRecovery = false;
+        if (saved) {
+          const parsedSaved = JSON.parse(saved);
+          const newHasNoEdits = (!parsedSaved.pdfReports || parsedSaved.pdfReports.length === 0) &&
+                                (!parsedSaved.expenses || parsedSaved.expenses.length <= defaultState.expenses.length);
+          if (newHasNoEdits) {
+            needsRecovery = true;
+          }
+        } else {
+          needsRecovery = true;
+        }
+        
+        if (needsRecovery) {
+          recoveredState = { ...defaultState, ...parsedOld };
+          const oldDate = parseDateTime(recoveredState.lastUpdated);
+          const defDate = parseDateTime(defaultState.lastUpdated);
+          if (defDate > oldDate) {
+            recoveredState.lastUpdated = defaultState.lastUpdated;
+          }
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(recoveredState));
+        }
+      }
+    }
+
+    if (recoveredState) {
+      loadedState = recoveredState;
+    } else if (saved) {
       const parsedSaved = JSON.parse(saved);
       const savedDate = parseDateTime(parsedSaved.lastUpdated);
       const defaultDate = parseDateTime(defaultState.lastUpdated);
@@ -125,12 +159,8 @@ function loadState() {
       if (loadedState.announcement === undefined) loadedState.announcement = "";
     } else if (oldSaved) {
       const parsedOld = JSON.parse(oldSaved);
-      // Migrate only if it contains actual data and is newer than defaultState
       const hasActualData = parsedOld.apartments && parsedOld.apartments[0] && parsedOld.apartments[0].occupant === 'Hülya KAPLAN';
-      const oldSavedDate = parseDateTime(parsedOld.lastUpdated);
-      const defaultDate = parseDateTime(defaultState.lastUpdated);
-      
-      if (hasActualData && oldSavedDate >= defaultDate) {
+      if (hasActualData) {
         loadedState = { ...defaultState, ...parsedOld };
         localStorage.setItem(STORAGE_KEY, JSON.stringify(loadedState));
       } else {
