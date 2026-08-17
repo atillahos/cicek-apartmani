@@ -1083,6 +1083,13 @@ function renderSettingsView() {
   if (transferInput) transferInput.value = state.previousYearTransfer || 0;
   if (dbUrlInput) dbUrlInput.value = state.dbUrl || '';
 
+  // Select the correct exempt apartment in the dropdown
+  const selectExempt = document.getElementById('selectExemptApt');
+  if (selectExempt) {
+    const exemptApt = state.apartments.find(a => a.isExempt);
+    selectExempt.value = exemptApt ? String(exemptApt.id) : 'none';
+  }
+
   const grid = document.getElementById('occupantsGrid');
   if (!grid) return;
   grid.innerHTML = '';
@@ -1090,13 +1097,10 @@ function renderSettingsView() {
   state.apartments.forEach(apt => {
     const div = document.createElement('div');
     div.className = 'form-group';
+    div.style.marginBottom = '1rem';
     div.innerHTML = `
       <label for="occupant_${apt.id}">Daire ${apt.id} Sakini</label>
       <input type="text" id="occupant_${apt.id}" class="form-control occupant-input" data-id="${apt.id}" value="${escapeHtml(apt.occupant || '')}">
-      <label style="font-size:0.75rem; color:var(--text-secondary); margin-top:0.25rem; display:inline-flex; align-items:center; gap:0.3rem;">
-        <input type="checkbox" class="exempt-checkbox" data-id="${apt.id}" ${apt.isExempt ? 'checked' : ''}>
-        Aidattan Muaf (Yönetici)
-      </label>
     `;
     grid.appendChild(div);
   });
@@ -1110,29 +1114,32 @@ function handleSaveSettings() {
   const newDues = parseFloat(document.getElementById('inputMonthlyDues').value);
   const newTransfer = parseFloat(document.getElementById('inputPreviousTransfer').value);
   const newDbUrl = document.getElementById('inputDbUrl').value.trim();
+  const selectExemptVal = document.getElementById('selectExemptApt').value;
 
   if (newTitle) state.buildingTitle = newTitle;
   if (!isNaN(newDues) && newDues > 0) state.monthlyDues = newDues;
   if (!isNaN(newTransfer) && newTransfer >= 0) state.previousYearTransfer = newTransfer;
   state.dbUrl = newDbUrl;
 
-  // Update Occupants and Exemption status
+  // Update Exemption status first
+  state.apartments.forEach(apt => {
+    const isExempt = String(apt.id) === selectExemptVal;
+    apt.isExempt = isExempt;
+    if (isExempt) {
+      if (!apt.payments) apt.payments = {};
+      for (let m = 1; m <= 12; m++) {
+        apt.payments[m] = true;
+      }
+    }
+  });
+
+  // Update Occupants names
   const inputs = document.querySelectorAll('.occupant-input');
   inputs.forEach(input => {
     const aptId = parseInt(input.getAttribute('data-id'), 10);
     const apt = state.apartments.find(a => a.id === aptId);
     if (apt) {
       apt.occupant = input.value.trim();
-      const checkbox = document.querySelector(`.exempt-checkbox[data-id="${aptId}"]`);
-      if (checkbox) {
-        apt.isExempt = checkbox.checked;
-        if (apt.isExempt) {
-          if (!apt.payments) apt.payments = {};
-          for (let m = 1; m <= 12; m++) {
-            apt.payments[m] = true;
-          }
-        }
-      }
     }
   });
 
