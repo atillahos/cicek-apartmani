@@ -136,23 +136,6 @@
         </div>
       </section>
 
-      <!-- Duyuru Paneli -->
-      <section class="announcement-section card-box">
-        <div class="dues-header">
-          <div class="dues-title">
-            <h2><i class="fa-solid fa-bullhorn"></i> Apartman Duyuru Paneli</h2>
-            <p>Bina sakinlerine iletmek istediğiniz duyuruları buraya yazın (Boş bırakırsanız sakin sayfasında görünmez)</p>
-          </div>
-        </div>
-        <div style="display: flex; flex-direction: column; gap: 0.75rem;">
-          <textarea id="announcementText" class="form-control" rows="3" placeholder="Örn: 2026 Yılı asansör bakım takvimi belirlenmiştir..." style="width: 100%; font-family: inherit; font-size: 0.95rem; resize: vertical; padding: 0.75rem; border-radius: 8px; border: 1.5px solid var(--border-color); background-color: var(--bg-body); color: var(--text-primary);"></textarea>
-          <div style="display: flex; justify-content: flex-end;">
-            <button class="btn btn-primary" id="btnSaveAnnouncement" title="Duyuruyu Güncelle ve Yayınla" style="padding: 0.5rem 0.75rem;">
-              <i class="fa-solid fa-floppy-disk"></i>
-            </button>
-          </div>
-        </div>
-      </section>
 
       <!-- Toplam Borç Durumu Bölümü -->
       <section class="total-debts-section card-box" id="totalDebtsSection">
@@ -415,6 +398,20 @@
       </div>
       
       <div class="settings-tab-body">
+        <!-- Duyuru Paneli -->
+        <div class="settings-section" style="margin-bottom: 1.5rem; border-bottom: 1px solid var(--border-color); padding-bottom: 1.5rem;">
+          <h4>Apartman Duyuru Paneli</h4>
+          <p class="subtitle-sm">Bina sakinlerine iletmek istediğiniz duyuruları buraya yazın (Boş bırakırsanız sakin sayfasında görünmez):</p>
+          <div style="display: flex; flex-direction: column; gap: 0.75rem; margin-top: 1rem;">
+            <textarea id="announcementText" class="form-control" rows="3" placeholder="Örn: 2026 Yılı asansör bakım takvimi belirlenmiştir..." style="width: 100%; font-family: inherit; font-size: 0.95rem; resize: vertical; padding: 0.75rem; border-radius: 8px; border: 1.5px solid var(--border-color); background-color: var(--bg-body); color: var(--text-primary);"></textarea>
+            <div style="display: flex; justify-content: flex-end;">
+              <button class="btn btn-primary" id="btnSaveAnnouncement" title="Duyuruyu Güncelle ve Yayınla" style="padding: 0.5rem 0.75rem;">
+                <i class="fa-solid fa-floppy-disk"></i> Duyuruyu Yayınla
+              </button>
+            </div>
+          </div>
+        </div>
+
         <!-- General Settings -->
         <div class="settings-section">
           <h4>Bina & Aidat Bilgileri</h4>
