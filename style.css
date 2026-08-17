@@ -1330,7 +1330,11 @@ p.subtitle {
 }
 
 body.dark-theme .tab-btn.active {
-  background: linear-gradient(135deg, var(--bg-card) 0%, #1e1b4b 100%);
+  border-top: 4px solid #ffffff;
+  background: linear-gradient(135deg, var(--bg-card) 0%, #2a2a2a 100%);
+}
+body.dark-theme .tab-btn.active .tab-btn-label {
+  color: #ffffff;
 }
 
 /* Dashboard & Payments SPA Section Layout spacing fix */
