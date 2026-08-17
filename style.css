@@ -1358,3 +1358,28 @@ body.dark-theme .tab-btn.active {
   flex-direction: column;
   gap: 2rem;
 }
+
+/* Custom Alert Red Styling for Sakin page Announcement Panel */
+#announcementBox {
+  background-color: var(--danger-light);
+  border: 1.5px solid #fecaca; /* Soft red border */
+  padding: 1.5rem;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+}
+
+#announcementDisplay {
+  font-size: 1.2rem;
+  line-height: 1.6;
+  color: #991b1b; /* Nice dark red text for readability */
+  font-weight: 600;
+}
+
+/* Dark mode overrides */
+body.dark-theme #announcementBox {
+  border-color: #ef4444;
+}
+
+body.dark-theme #announcementDisplay {
+  color: #fca5a5; /* Soft pastel red text for high contrast */
+}
