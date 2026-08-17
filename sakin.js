@@ -633,10 +633,8 @@ function setupEventListeners() {
         if (sec) {
           if (sec.id === targetId) {
             sec.classList.remove('hidden');
-            sec.style.display = ''; // Reset inline style
           } else {
             sec.classList.add('hidden');
-            sec.style.display = 'none'; // Force hide
           }
         }
       });

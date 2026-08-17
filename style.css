@@ -1351,8 +1351,9 @@ body.dark-theme .tab-btn.active {
   background: linear-gradient(135deg, var(--bg-card) 0%, #1e1b4b 100%);
 }
 
-/* Dashboard SPA Section Layout spacing fix */
-#dashboardSection {
+/* Dashboard & Payments SPA Section Layout spacing fix */
+#dashboardSection,
+#paymentsSection {
   display: flex;
   flex-direction: column;
   gap: 2rem;
