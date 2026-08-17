@@ -1500,8 +1500,6 @@ function renderPdfReports() {
     const tr = document.createElement('tr');
     tr.innerHTML = `
       <td><strong style="color: var(--primary);"><i class="fa-solid fa-file-pdf"></i> ${escapeHtml(pdf.title)}</strong></td>
-      <td>${pdf.date}</td>
-      <td>${pdf.size}</td>
       <td style="text-align: center; display: flex; gap: 0.5rem; justify-content: center; align-items: center;">
         <a href="${pdf.fileData}" download="${escapeHtml(pdf.title)}.pdf" class="btn btn-outline" style="padding: 0.3rem 0.6rem; font-size: 0.8rem; text-decoration: none;">
           <i class="fa-solid fa-download"></i> İndir
