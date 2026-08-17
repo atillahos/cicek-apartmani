@@ -615,8 +615,7 @@ function setupEventListeners() {
   const tabBtns = document.querySelectorAll('.tab-navigation .tab-btn');
   const sections = [
     document.getElementById('dashboardSection'),
-    document.getElementById('duesSection'),
-    document.getElementById('extraSection'),
+    document.getElementById('paymentsSection'),
     document.getElementById('expensesSection'),
     document.getElementById('pdfSection')
   ];

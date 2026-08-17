@@ -48,8 +48,7 @@
     <!-- Sekmeli Menü Navigasyonu -->
     <nav class="tab-navigation">
       <button class="tab-btn active" data-target="dashboardSection"><i class="fa-solid fa-chart-pie"></i> Genel Durum</button>
-      <button class="tab-btn" data-target="duesSection"><i class="fa-solid fa-table-cells"></i> Aidat Takip</button>
-      <button class="tab-btn" data-target="extraSection"><i class="fa-solid fa-hand-holding-dollar"></i> Ek Ödemeler</button>
+      <button class="tab-btn" data-target="paymentsSection"><i class="fa-solid fa-credit-card"></i> Ödemeler</button>
       <button class="tab-btn" data-target="expensesSection"><i class="fa-solid fa-arrow-trend-down"></i> Harcamalar</button>
       <button class="tab-btn" data-target="pdfSection"><i class="fa-solid fa-file-pdf"></i> Rapor Arşivi</button>
     </nav>
@@ -79,8 +78,10 @@
       </section>
     </div>
 
-    <!-- 2. AİDAT TAKİP SEKME ALANI -->
-    <section class="dues-section card-box hidden" id="duesSection">
+    <!-- 2. ÖDEMELER SEKME ALANI (Aidat ve Ek Ödemeler Bir Arada) -->
+    <div id="paymentsSection" class="hidden" style="display: flex; flex-direction: column; gap: 2rem;">
+      <!-- Aidat Takip Tablosu -->
+      <section class="dues-section card-box" id="duesSection">
       <div class="dues-header">
         <div class="dues-title">
           <h2><i class="fa-solid fa-table-cells"></i> Aidat Takip Tablosu</h2>
@@ -137,7 +138,7 @@
 
 
     <!-- Ek Ödemeler Section (Ek Bütçe Toplama) -->
-    <section class="extra-collections-section card-box hidden" id="extraSection">
+    <section class="extra-collections-section card-box" id="extraSection">
       <div class="dues-header" style="margin-bottom: 1rem;">
         <div class="dues-title">
           <h2><i class="fa-solid fa-table-cells"></i> Ek Aidat Takip Tablosu</h2>
@@ -194,6 +195,7 @@
         </div>
       </div>
     </section>
+    </div>
 
 
     <!-- Expenses Section (Giderler Bölümü) -->
