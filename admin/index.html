@@ -49,87 +49,99 @@
   <!-- Main Content -->
   <main class="container main-content">
 
-    <!-- Financial Kasa Summary Cards -->
-    <section class="financial-summary">
-      <div class="section-header">
-        <h2><i class="fa-solid fa-wallet"></i> Güncel Kasa Durumu</h2>
-      </div>
+    <!-- Sekmeli Menü Navigasyonu -->
+    <nav class="tab-navigation">
+      <button class="tab-btn active" data-target="dashboardSection"><i class="fa-solid fa-chart-pie"></i> Genel Durum</button>
+      <button class="tab-btn" data-target="duesSection"><i class="fa-solid fa-table-cells"></i> Aidat Takip</button>
+      <button class="tab-btn" data-target="extraSection"><i class="fa-solid fa-hand-holding-dollar"></i> Ek Ödemeler</button>
+      <button class="tab-btn" data-target="expensesSection"><i class="fa-solid fa-arrow-trend-down"></i> Harcamalar</button>
+      <button class="tab-btn" data-target="pdfSection"><i class="fa-solid fa-file-pdf"></i> Rapor Arşivi</button>
+    </nav>
 
-      <div class="kasa-grid">
-        <!-- 1. Geçmiş Yıldan Aktarılan -->
-        <div class="kasa-card kasa-pending">
-          <div class="kasa-card-header">
-            <span class="kasa-label">Geçen Yıldan Aktarılan</span>
-            <div class="kasa-icon kasa-icon-pending"><i class="fa-solid fa-clock-rotate-left"></i></div>
+    <!-- 1. GENEL DURUM (DASHBOARD) SEKME ALANI -->
+    <div id="dashboardSection">
+      <!-- Financial Kasa Summary Cards -->
+      <section class="financial-summary">
+        <div class="section-header">
+          <h2><i class="fa-solid fa-wallet"></i> Güncel Kasa Durumu</h2>
+        </div>
+
+        <div class="kasa-grid">
+          <!-- 1. Geçmiş Yıldan Aktarılan -->
+          <div class="kasa-card kasa-pending">
+            <div class="kasa-card-header">
+              <span class="kasa-label">Geçen Yıldan Aktarılan</span>
+              <div class="kasa-icon kasa-icon-pending"><i class="fa-solid fa-clock-rotate-left"></i></div>
+            </div>
+            <div class="kasa-amount" id="kasaPreviousTransfer">0 ₺</div>
+            <div class="kasa-subtext">Devreden Bakiye</div>
           </div>
-          <div class="kasa-amount" id="kasaPreviousTransfer">0 ₺</div>
-          <div class="kasa-subtext">Devreden Bakiye</div>
-        </div>
 
-        <!-- 2. Gelirler -->
-        <div class="kasa-card kasa-income">
-          <div class="kasa-card-header">
-            <span class="kasa-label">Gelirler</span>
-            <div class="kasa-icon kasa-icon-income"><i class="fa-solid fa-arrow-trend-up"></i></div>
+          <!-- 2. Toplam Aidat Gelirleri -->
+          <div class="kasa-card kasa-income">
+            <div class="kasa-card-header">
+              <span class="kasa-label">Gelirler</span>
+              <div class="kasa-icon kasa-icon-income"><i class="fa-solid fa-arrow-trend-up"></i></div>
+            </div>
+            <div class="kasa-amount" id="kasaTotalIncome">0 ₺</div>
+            <div class="kasa-subtext" id="kasaPaidCountText">0 / 156 aidat ödendi</div>
           </div>
-          <div class="kasa-amount" id="kasaTotalIncome">0 ₺</div>
-          <div class="kasa-subtext" id="kasaPaidCountText">0 / 156 aidat ödendi</div>
-        </div>
 
-        <!-- 3. Giderler -->
-        <div class="kasa-card kasa-expense">
-          <div class="kasa-card-header">
-            <span class="kasa-label">Giderler</span>
-            <div class="kasa-icon kasa-icon-expense"><i class="fa-solid fa-arrow-trend-down"></i></div>
+          <!-- 3. Toplam Giderler -->
+          <div class="kasa-card kasa-expense">
+            <div class="kasa-card-header">
+              <span class="kasa-label">Giderler</span>
+              <div class="kasa-icon kasa-icon-expense"><i class="fa-solid fa-arrow-trend-down"></i></div>
+            </div>
+            <div class="kasa-amount" id="kasaTotalExpense">0 ₺</div>
+            <div class="kasa-subtext" id="kasaExpenseCountText">0 adet gider kaydı</div>
           </div>
-          <div class="kasa-amount" id="kasaTotalExpense">0 ₺</div>
-          <div class="kasa-subtext" id="kasaExpenseCountText">0 adet gider kaydı</div>
-        </div>
 
-        <!-- 4. Kasa Bakiyesi -->
-        <div class="kasa-card kasa-main">
-          <div class="kasa-card-header">
-            <span class="kasa-label">Güncel Kasa Bakiyesi</span>
-            <div class="kasa-icon kasa-icon-main"><i class="fa-solid fa-wallet"></i></div>
+          <!-- 4. Net Kasa Bakiyesi -->
+          <div class="kasa-card kasa-main">
+            <div class="kasa-card-header">
+              <span class="kasa-label">Güncel Kasa Bakiyesi</span>
+              <div class="kasa-icon kasa-icon-main"><i class="fa-solid fa-wallet"></i></div>
+            </div>
+            <div class="kasa-amount" id="kasaNetBalance">0 ₺</div>
+            <div class="kasa-subtext" id="kasaNetSubtext">Gelirler - Giderler</div>
           </div>
-          <div class="kasa-amount" id="kasaNetBalance">0 ₺</div>
-          <div class="kasa-subtext" id="kasaNetSubtext">Gelirler - Giderler</div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <!-- Duyuru Paneli -->
-    <section class="announcement-section card-box">
-      <div class="dues-header">
-        <div class="dues-title">
-          <h2><i class="fa-solid fa-bullhorn"></i> Apartman Duyuru Paneli</h2>
-          <p>Bina sakinlerine iletmek istediğiniz duyuruları buraya yazın (Boş bırakırsanız sakin sayfasında görünmez)</p>
+      <!-- Duyuru Paneli -->
+      <section class="announcement-section card-box">
+        <div class="dues-header">
+          <div class="dues-title">
+            <h2><i class="fa-solid fa-bullhorn"></i> Apartman Duyuru Paneli</h2>
+            <p>Bina sakinlerine iletmek istediğiniz duyuruları buraya yazın (Boş bırakırsanız sakin sayfasında görünmez)</p>
+          </div>
         </div>
-      </div>
-      <div style="display: flex; flex-direction: column; gap: 0.75rem;">
-        <textarea id="announcementText" class="form-control" rows="3" placeholder="Örn: 2026 Yılı asansör bakım takvimi belirlenmiştir..." style="width: 100%; font-family: inherit; font-size: 0.95rem; resize: vertical; padding: 0.75rem; border-radius: 8px; border: 1.5px solid var(--border-color); background-color: var(--bg-body); color: var(--text-primary);"></textarea>
-        <div style="display: flex; justify-content: flex-end;">
-          <button class="btn btn-primary" id="btnSaveAnnouncement" title="Duyuruyu Güncelle ve Yayınla" style="padding: 0.5rem 0.75rem;">
-            <i class="fa-solid fa-floppy-disk"></i>
-          </button>
+        <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+          <textarea id="announcementText" class="form-control" rows="3" placeholder="Örn: 2026 Yılı asansör bakım takvimi belirlenmiştir..." style="width: 100%; font-family: inherit; font-size: 0.95rem; resize: vertical; padding: 0.75rem; border-radius: 8px; border: 1.5px solid var(--border-color); background-color: var(--bg-body); color: var(--text-primary);"></textarea>
+          <div style="display: flex; justify-content: flex-end;">
+            <button class="btn btn-primary" id="btnSaveAnnouncement" title="Duyuruyu Güncelle ve Yayınla" style="padding: 0.5rem 0.75rem;">
+              <i class="fa-solid fa-floppy-disk"></i>
+            </button>
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <!-- Toplam Borç Durumu Bölümü -->
-    <section class="total-debts-section card-box" id="totalDebtsSection">
-      <div class="dues-header" style="margin-bottom: 1rem;">
-        <div class="dues-title">
-          <h2><i class="fa-solid fa-file-invoice-dollar"></i> Genel Durum</h2>
+      <!-- Toplam Borç Durumu Bölümü -->
+      <section class="total-debts-section card-box" id="totalDebtsSection">
+        <div class="dues-header" style="margin-bottom: 1rem;">
+          <div class="dues-title">
+            <h2><i class="fa-solid fa-file-invoice-dollar"></i> Genel Durum</h2>
+          </div>
         </div>
-      </div>
-      <div class="debts-grid" id="totalDebtsGrid">
-        <!-- JS Populated Debt Rows -->
-      </div>
-    </section>
+        <div class="debts-grid" id="totalDebtsGrid">
+          <!-- JS Populated Debt Rows -->
+        </div>
+      </section>
+    </div>
 
-    <!-- Dues Table Section (Aidat Tablosu) -->
-    <section class="dues-section card-box">
+    <!-- 2. AİDAT TAKİP SEKME ALANI -->
+    <section class="dues-section card-box hidden" id="duesSection">
       <div class="dues-header">
         <div class="dues-title">
           <h2><i class="fa-solid fa-table-cells"></i> Aidat Takip Tablosu</h2>
@@ -199,7 +211,7 @@
 
 
     <!-- Ek Ödemeler Section (Ek Bütçe Toplama) -->
-    <section class="extra-collections-section card-box">
+    <section class="extra-collections-section card-box hidden" id="extraSection">
       <div class="dues-header" style="margin-bottom: 1rem;">
         <div class="dues-title">
           <h2><i class="fa-solid fa-table-cells"></i> Ek Aidat Takip Tablosu</h2>
@@ -275,7 +287,7 @@
     </section>
 
     <!-- Expenses Section (Giderler Bölümü) -->
-    <section class="expenses-section card-box">
+    <section class="expenses-section card-box hidden" id="expensesSection">
       <div class="expenses-header">
         <div>
           <h2><i class="fa-solid fa-arrow-circle-right"></i> Aylık Giderler Paneli</h2>
@@ -333,7 +345,7 @@
     </section>
 
     <!-- PDF Raporları Section -->
-    <section class="pdf-reports-section card-box">
+    <section class="pdf-reports-section card-box hidden" id="pdfSection">
       <div class="dues-header">
         <div class="dues-title">
           <h2><i class="fa-solid fa-file-pdf"></i> Yıllık Rapor Arşivi</h2>

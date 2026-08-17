@@ -611,6 +611,39 @@ function renderExpensesTable() {
 }
 
 function setupEventListeners() {
+  // SPA Tab Navigation
+  const tabBtns = document.querySelectorAll('.tab-navigation .tab-btn');
+  const sections = [
+    document.getElementById('dashboardSection'),
+    document.getElementById('duesSection'),
+    document.getElementById('extraSection'),
+    document.getElementById('expensesSection'),
+    document.getElementById('pdfSection')
+  ];
+
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const targetId = btn.getAttribute('data-target');
+      
+      // Update active tab button style
+      tabBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      // Show target section, hide others
+      sections.forEach(sec => {
+        if (sec) {
+          if (sec.id === targetId) {
+            sec.classList.remove('hidden');
+            sec.style.display = ''; // Reset inline style
+          } else {
+            sec.classList.add('hidden');
+            sec.style.display = 'none'; // Force hide
+          }
+        }
+      });
+    });
+  });
+
   // Toggle View Buttons (Table vs Cards)
   const btnTable = document.getElementById('btnTableView');
   const btnGrid = document.getElementById('btnGridView');

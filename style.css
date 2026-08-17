@@ -1272,3 +1272,42 @@ p.subtitle {
 .debt-row-right.debt-neutral {
   color: var(--success);
 }
+
+/* Navigation Tab Bar */
+.tab-navigation {
+  display: flex;
+  gap: 0.5rem;
+  background-color: var(--bg-card);
+  padding: 0.5rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+  margin-bottom: 1.5rem;
+  overflow-x: auto; /* Mobilde yatay kaydırılabilir menü */
+  scrollbar-width: none;
+}
+.tab-navigation::-webkit-scrollbar {
+  display: none;
+}
+.tab-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: var(--transition);
+}
+.tab-btn:hover {
+  color: var(--primary);
+  background-color: var(--bg-hover);
+}
+.tab-btn.active {
+  color: var(--primary);
+  background-color: var(--primary-light);
+}
