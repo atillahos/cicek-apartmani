@@ -429,23 +429,28 @@ function renderKasaSummary() {
   const prevTransfer = parseFloat(state.previousYearTransfer) || 0;
   const netBalance = prevTransfer + totalIncome - totalExpenses;
 
-  // Update DOM
-  document.getElementById('kasaPreviousTransfer').innerText = `${formatMoney(prevTransfer)} ₺`;
-  document.getElementById('kasaTotalIncome').innerText = `${formatMoney(totalIncome)} ₺`;
-  document.getElementById('kasaPaidCountText').innerText = `Aidat: ${formatMoney(totalDuesIncome)} ₺ | Ek Bütçe: ${formatMoney(totalExtraIncome)} ₺`;
+  // Update DOM using classes to support multiple instances of Kasa grids
+  const updateAll = (className, value) => {
+    document.querySelectorAll('.' + className).forEach(el => {
+      el.innerText = value;
+    });
+  };
 
-  document.getElementById('kasaTotalExpense').innerText = `${formatMoney(totalExpenses)} ₺`;
-  document.getElementById('kasaExpenseCountText').innerText = `${state.expenses.length} adet gider kaydı`;
-
-  document.getElementById('kasaNetBalance').innerText = `${formatMoney(netBalance)} ₺`;
+  updateAll('kasa-previous-transfer', `${formatMoney(prevTransfer)} ₺`);
+  updateAll('kasa-total-income', `${formatMoney(totalIncome)} ₺`);
+  updateAll('kasa-paid-count-text', `Aidat: ${formatMoney(totalDuesIncome)} ₺ | Ek Bütçe: ${formatMoney(totalExtraIncome)} ₺`);
+  updateAll('kasa-total-expense', `${formatMoney(totalExpenses)} ₺`);
+  updateAll('kasa-expense-count-text', `${state.expenses.length} adet gider kaydı`);
+  updateAll('kasa-net-balance', `${formatMoney(netBalance)} ₺`);
 
   // Net Balance Color styling
-  const netCard = document.getElementById('kasaNetBalance');
-  if (netBalance < 0) {
-    netCard.style.color = 'var(--danger)';
-  } else {
-    netCard.style.color = 'var(--text-primary)';
-  }
+  document.querySelectorAll('.kasa-net-balance').forEach(el => {
+    if (netBalance < 0) {
+      el.style.color = 'var(--danger)';
+    } else {
+      el.style.color = '';
+    }
+  });
 }
 
 /**

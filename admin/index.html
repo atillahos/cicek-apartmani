@@ -100,7 +100,7 @@
               <span class="kasa-label">Geçen Yıldan Aktarılan</span>
               <div class="kasa-icon kasa-icon-pending"><i class="fa-solid fa-clock-rotate-left"></i></div>
             </div>
-            <div class="kasa-amount" id="kasaPreviousTransfer">0 ₺</div>
+            <div class="kasa-amount kasa-previous-transfer">0 ₺</div>
             <div class="kasa-subtext">Devreden Bakiye</div>
           </div>
 
@@ -110,8 +110,8 @@
               <span class="kasa-label">Gelirler</span>
               <div class="kasa-icon kasa-icon-income"><i class="fa-solid fa-arrow-trend-up"></i></div>
             </div>
-            <div class="kasa-amount" id="kasaTotalIncome">0 ₺</div>
-            <div class="kasa-subtext" id="kasaPaidCountText">0 / 156 aidat ödendi</div>
+            <div class="kasa-amount kasa-total-income">0 ₺</div>
+            <div class="kasa-subtext kasa-paid-count-text">0 / 156 aidat ödendi</div>
           </div>
 
           <!-- 3. Toplam Giderler -->
@@ -120,8 +120,8 @@
               <span class="kasa-label">Giderler</span>
               <div class="kasa-icon kasa-icon-expense"><i class="fa-solid fa-arrow-trend-down"></i></div>
             </div>
-            <div class="kasa-amount" id="kasaTotalExpense">0 ₺</div>
-            <div class="kasa-subtext" id="kasaExpenseCountText">0 adet gider kaydı</div>
+            <div class="kasa-amount kasa-total-expense">0 ₺</div>
+            <div class="kasa-subtext kasa-expense-count-text">0 adet gider kaydı</div>
           </div>
 
           <!-- 4. Net Kasa Bakiyesi -->
@@ -130,8 +130,8 @@
               <span class="kasa-label">Güncel Kasa Bakiyesi</span>
               <div class="kasa-icon kasa-icon-main"><i class="fa-solid fa-wallet"></i></div>
             </div>
-            <div class="kasa-amount" id="kasaNetBalance">0 ₺</div>
-            <div class="kasa-subtext" id="kasaNetSubtext">Gelirler - Giderler</div>
+            <div class="kasa-amount kasa-net-balance">0 ₺</div>
+            <div class="kasa-subtext">Gelirler - Giderler</div>
           </div>
         </div>
       </section>
@@ -152,6 +152,55 @@
 
     <!-- 2. ÖDEMELER SEKME ALANI (Aidat ve Ek Ödemeler Bir Arada) -->
     <div id="paymentsSection" class="hidden" style="display: flex; flex-direction: column; gap: 2rem;">
+      <!-- Financial Kasa Summary Cards -->
+      <section class="financial-summary">
+        <div class="section-header">
+          <h2><i class="fa-solid fa-wallet"></i> Güncel Kasa Durumu</h2>
+        </div>
+
+        <div class="kasa-grid">
+          <!-- 1. Geçmiş Yıldan Aktarılan -->
+          <div class="kasa-card kasa-pending">
+            <div class="kasa-card-header">
+              <span class="kasa-label">Geçen Yıldan Aktarılan</span>
+              <div class="kasa-icon kasa-icon-pending"><i class="fa-solid fa-clock-rotate-left"></i></div>
+            </div>
+            <div class="kasa-amount kasa-previous-transfer">0 ₺</div>
+            <div class="kasa-subtext">Devreden Bakiye</div>
+          </div>
+
+          <!-- 2. Toplam Aidat Gelirleri -->
+          <div class="kasa-card kasa-income">
+            <div class="kasa-card-header">
+              <span class="kasa-label">Gelirler</span>
+              <div class="kasa-icon kasa-icon-income"><i class="fa-solid fa-arrow-trend-up"></i></div>
+            </div>
+            <div class="kasa-amount kasa-total-income">0 ₺</div>
+            <div class="kasa-subtext kasa-paid-count-text">0 / 156 aidat ödendi</div>
+          </div>
+
+          <!-- 3. Toplam Giderler -->
+          <div class="kasa-card kasa-expense">
+            <div class="kasa-card-header">
+              <span class="kasa-label">Giderler</span>
+              <div class="kasa-icon kasa-icon-expense"><i class="fa-solid fa-arrow-trend-down"></i></div>
+            </div>
+            <div class="kasa-amount kasa-total-expense">0 ₺</div>
+            <div class="kasa-subtext kasa-expense-count-text">0 adet gider kaydı</div>
+          </div>
+
+          <!-- 4. Net Kasa Bakiyesi -->
+          <div class="kasa-card kasa-main">
+            <div class="kasa-card-header">
+              <span class="kasa-label">Güncel Kasa Bakiyesi</span>
+              <div class="kasa-icon kasa-icon-main"><i class="fa-solid fa-wallet"></i></div>
+            </div>
+            <div class="kasa-amount kasa-net-balance">0 ₺</div>
+            <div class="kasa-subtext">Gelirler - Giderler</div>
+          </div>
+        </div>
+      </section>
+
       <!-- Aidat Takip Tablosu -->
       <section class="dues-section card-box" id="duesSection">
       <div class="dues-header">
@@ -299,8 +348,59 @@
     </section>
     </div>
 
-    <!-- Expenses Section (Giderler Bölümü) -->
-    <section class="expenses-section card-box hidden" id="expensesSection">
+    <!-- 3. GİDERLER SEKME ALANI -->
+    <div id="expensesSection" class="hidden" style="display: flex; flex-direction: column; gap: 2rem;">
+      <!-- Financial Kasa Summary Cards -->
+      <section class="financial-summary">
+        <div class="section-header">
+          <h2><i class="fa-solid fa-wallet"></i> Güncel Kasa Durumu</h2>
+        </div>
+
+        <div class="kasa-grid">
+          <!-- 1. Geçmiş Yıldan Aktarılan -->
+          <div class="kasa-card kasa-pending">
+            <div class="kasa-card-header">
+              <span class="kasa-label">Geçen Yıldan Aktarılan</span>
+              <div class="kasa-icon kasa-icon-pending"><i class="fa-solid fa-clock-rotate-left"></i></div>
+            </div>
+            <div class="kasa-amount kasa-previous-transfer">0 ₺</div>
+            <div class="kasa-subtext">Devreden Bakiye</div>
+          </div>
+
+          <!-- 2. Toplam Aidat Gelirleri -->
+          <div class="kasa-card kasa-income">
+            <div class="kasa-card-header">
+              <span class="kasa-label">Gelirler</span>
+              <div class="kasa-icon kasa-icon-income"><i class="fa-solid fa-arrow-trend-up"></i></div>
+            </div>
+            <div class="kasa-amount kasa-total-income">0 ₺</div>
+            <div class="kasa-subtext kasa-paid-count-text">0 / 156 aidat ödendi</div>
+          </div>
+
+          <!-- 3. Toplam Giderler -->
+          <div class="kasa-card kasa-expense">
+            <div class="kasa-card-header">
+              <span class="kasa-label">Giderler</span>
+              <div class="kasa-icon kasa-icon-expense"><i class="fa-solid fa-arrow-trend-down"></i></div>
+            </div>
+            <div class="kasa-amount kasa-total-expense">0 ₺</div>
+            <div class="kasa-subtext kasa-expense-count-text">0 adet gider kaydı</div>
+          </div>
+
+          <!-- 4. Net Kasa Bakiyesi -->
+          <div class="kasa-card kasa-main">
+            <div class="kasa-card-header">
+              <span class="kasa-label">Güncel Kasa Bakiyesi</span>
+              <div class="kasa-icon kasa-icon-main"><i class="fa-solid fa-wallet"></i></div>
+            </div>
+            <div class="kasa-amount kasa-net-balance">0 ₺</div>
+            <div class="kasa-subtext">Gelirler - Giderler</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Expenses Section (Giderler Bölümü) -->
+      <section class="expenses-section card-box" id="expensesSectionContent">
       <div class="expenses-header">
         <div>
           <h2><i class="fa-solid fa-arrow-circle-right"></i> Aylık Giderler Paneli</h2>
@@ -356,6 +456,7 @@
         </div>
       </div>
     </section>
+    </div>
 
     <!-- PDF Raporları Section -->
     <section class="pdf-reports-section card-box hidden" id="pdfSection">
