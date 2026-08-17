@@ -277,13 +277,15 @@ function renderTotalDebtsSummary() {
 
     const netDuesDebtVal = apt.isExempt ? 0 : (duesDebt - duesCredit) * state.monthlyDues;
 
-    // 2. Calculate extra dues debt
+    // 2. Calculate extra dues debt and list unpaid campaigns individually
     let extraDebtVal = 0;
+    const unpaidExtraDetails = [];
     (state.extraCollections || []).forEach(col => {
       const colPayments = (typeof getEffectivePayments === 'function') ? getEffectivePayments(col) : (col.payments || {});
       const isPaid = colPayments[apt.id];
       if (!isPaid) {
         extraDebtVal += col.amountPerApt;
+        unpaidExtraDetails.push(`${col.title}: ${formatMoney(col.amountPerApt)} ₺`);
       }
     });
 
@@ -311,12 +313,14 @@ function renderTotalDebtsSummary() {
 
     // Detail breakdown text
     let detailText = '';
-    if (apt.isExempt) {
-      detailText = `Aidat: Muaf | Ek Ödeme: ${formatMoney(extraDebtVal)} ₺`;
-    } else {
-      const duesStr = netDuesDebtVal < 0 ? `+${formatMoney(Math.abs(netDuesDebtVal))} ₺ (Alacak)` : `${formatMoney(netDuesDebtVal)} ₺`;
-      detailText = `Aidat: ${duesStr} | Ek Ödeme: ${formatMoney(extraDebtVal)} ₺`;
+    const duesStr = apt.isExempt ? 'Muaf' : (netDuesDebtVal < 0 ? `+${formatMoney(Math.abs(netDuesDebtVal))} ₺ (Alacak)` : `${formatMoney(netDuesDebtVal)} ₺`);
+    
+    let extraStr = 'Ek Ödeme Yok';
+    if (unpaidExtraDetails.length > 0) {
+      extraStr = unpaidExtraDetails.join(' | ');
     }
+
+    detailText = `Aidat: ${duesStr} | ${extraStr}`;
 
     row.innerHTML = `
       <div class="debt-row-left">
