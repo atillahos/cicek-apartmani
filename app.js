@@ -357,6 +357,7 @@ function initApp() {
   renderPdfReports();
   renderTotalDebtsSummary();
   updateLastUpdatedDisplay();
+  renderSettingsView();
   
   const announcementArea = document.getElementById('announcementText');
   if (announcementArea) {
@@ -865,7 +866,8 @@ function setupEventListeners() {
     document.getElementById('dashboardSection'),
     document.getElementById('paymentsSection'),
     document.getElementById('expensesSection'),
-    document.getElementById('pdfSection')
+    document.getElementById('pdfSection'),
+    document.getElementById('settingsSection')
   ];
 
   tabBtns.forEach(btn => {
@@ -892,9 +894,15 @@ function setupEventListeners() {
   // Search input (if present)
   const searchInput = document.getElementById('daireSearch');
   if (searchInput) {
-    searchInput.addEventListener('input', () => {
-      renderDuesTable();
-      renderGridViewCards();
+    searchInput.addEventListener('input', handleSearch);
+  }
+
+  // Dues edit buttons
+  const btnEditRate = document.getElementById('btnEditRate');
+  if (btnEditRate) {
+    btnEditRate.addEventListener('click', () => {
+      const settingsTab = document.querySelector('.tab-navigation .tab-btn[data-target="settingsSection"]');
+      if (settingsTab) settingsTab.click();
     });
   }
 
@@ -931,14 +939,14 @@ function setupEventListeners() {
   document.getElementById('cancelExpenseModal').addEventListener('click', () => closeModal('expenseModal'));
   document.getElementById('expenseForm').addEventListener('submit', handleAddExpense);
 
-  // Settings Modal
-  document.getElementById('btnSettings').addEventListener('click', openSettingsModal);
+  // Settings tab listeners
   const btnEditDues = document.getElementById('btnEditDues');
   if (btnEditDues) {
-    btnEditDues.addEventListener('click', openSettingsModal);
+    btnEditDues.addEventListener('click', () => {
+      const settingsTab = document.querySelector('.tab-navigation .tab-btn[data-target="settingsSection"]');
+      if (settingsTab) settingsTab.click();
+    });
   }
-  document.getElementById('closeSettingsModal').addEventListener('click', () => closeModal('settingsModal'));
-  document.getElementById('cancelSettingsModal').addEventListener('click', () => closeModal('settingsModal'));
   document.getElementById('saveSettingsBtn').addEventListener('click', handleSaveSettings);
 
   // Print Button
@@ -1062,15 +1070,21 @@ function openAddExpenseModal() {
 }
 
 /**
- * Open Settings & Occupants Modal
+ * Render Settings & Occupants Tab Page
  */
-function openSettingsModal() {
-  document.getElementById('inputBuildingTitle').value = state.buildingTitle;
-  document.getElementById('inputMonthlyDues').value = state.monthlyDues;
-  document.getElementById('inputPreviousTransfer').value = state.previousYearTransfer || 0;
-  document.getElementById('inputDbUrl').value = state.dbUrl || "";
+function renderSettingsView() {
+  const titleInput = document.getElementById('inputBuildingTitle');
+  const duesInput = document.getElementById('inputMonthlyDues');
+  const transferInput = document.getElementById('inputPreviousTransfer');
+  const dbUrlInput = document.getElementById('inputDbUrl');
+
+  if (titleInput) titleInput.value = state.buildingTitle || '';
+  if (duesInput) duesInput.value = state.monthlyDues || '';
+  if (transferInput) transferInput.value = state.previousYearTransfer || 0;
+  if (dbUrlInput) dbUrlInput.value = state.dbUrl || '';
 
   const grid = document.getElementById('occupantsGrid');
+  if (!grid) return;
   grid.innerHTML = '';
 
   state.apartments.forEach(apt => {
@@ -1086,8 +1100,6 @@ function openSettingsModal() {
     `;
     grid.appendChild(div);
   });
-
-  openModal('settingsModal');
 }
 
 /**
@@ -1126,7 +1138,6 @@ function handleSaveSettings() {
 
   saveState();
   initApp();
-  closeModal('settingsModal');
   showToast('Ayarlar ve sakin bilgileri güncellendi.', 'success');
 }
 
