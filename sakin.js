@@ -302,8 +302,7 @@ let isFirstSync = true;
 function initApp() {
   const filter = document.getElementById('expenseMonthFilter');
   if (filter && !filter.dataset.initialized) {
-    const currentMonthNum = new Date().getMonth() + 1;
-    filter.value = String(currentMonthNum);
+    filter.value = 'all';
     filter.dataset.initialized = 'true';
   }
 

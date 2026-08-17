@@ -739,9 +739,9 @@ function renderExpensesTable() {
   const notice = document.getElementById('noExpensesNotice');
   const filterEl = document.getElementById('expenseMonthFilter');
 
-  // Varsayılan olarak güncel ayı göster
+  // Varsayılan olarak tüm ayları göster
   if (!filterEl._initialized) {
-    filterEl.value = String(new Date().getMonth() + 1);
+    filterEl.value = 'all';
     filterEl._initialized = true;
   }
   const monthFilter = filterEl.value;
