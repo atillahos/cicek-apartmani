@@ -207,6 +207,84 @@ async function syncWithCloudDatabase() {
   }
 }
 
+function renderTotalDebtsSummary() {
+  const container = document.getElementById('totalDebtsGrid');
+  if (!container) return;
+  container.innerHTML = '';
+
+  const currentMonth = new Date().getMonth() + 1;
+
+  state.apartments.forEach(apt => {
+    // 1. Calculate dues debt / credit
+    let duesDebt = 0;
+    let duesCredit = 0;
+    const effectivePayments = (typeof getEffectiveAidatPayments === 'function') ? getEffectiveAidatPayments(apt) : (apt.payments || {});
+
+    for (let m = 1; m <= 12; m++) {
+      const isPaid = apt.isExempt ? true : effectivePayments[m];
+      if (isPaid) {
+        if (m > currentMonth && !apt.isExempt) {
+          duesCredit++;
+        }
+      } else if (m <= currentMonth && !apt.isExempt) {
+        duesDebt++;
+      }
+    }
+
+    const netDuesDebtVal = apt.isExempt ? 0 : (duesDebt - duesCredit) * state.monthlyDues;
+
+    // 2. Calculate extra dues debt
+    let extraDebtVal = 0;
+    (state.extraCollections || []).forEach(col => {
+      const colPayments = (typeof getEffectivePayments === 'function') ? getEffectivePayments(col) : (col.payments || {});
+      const isPaid = colPayments[apt.id];
+      if (!isPaid) {
+        extraDebtVal += col.amountPerApt;
+      }
+    });
+
+    const totalDebtVal = netDuesDebtVal + extraDebtVal;
+
+    // Format text and styling
+    const row = document.createElement('div');
+    row.className = 'debt-row';
+
+    let rowClass = 'no-debt';
+    let rightClass = 'debt-neutral';
+    let rightText = '0 ₺';
+
+    if (totalDebtVal > 0) {
+      rowClass = 'has-debt';
+      rightClass = 'debt-danger';
+      rightText = `${formatMoney(totalDebtVal)} ₺`;
+    } else if (totalDebtVal < 0) {
+      rowClass = 'has-credit';
+      rightClass = 'debt-success';
+      rightText = `+${formatMoney(Math.abs(totalDebtVal))} ₺`;
+    }
+
+    row.classList.add(rowClass);
+
+    // Detail breakdown text
+    let detailText = '';
+    if (apt.isExempt) {
+      detailText = `Aidat: Muaf | Ek Ödeme: ${formatMoney(extraDebtVal)} ₺`;
+    } else {
+      const duesStr = netDuesDebtVal < 0 ? `+${formatMoney(Math.abs(netDuesDebtVal))} ₺ (Alacak)` : `${formatMoney(netDuesDebtVal)} ₺`;
+      detailText = `Aidat: ${duesStr} | Ek Ödeme: ${formatMoney(extraDebtVal)} ₺`;
+    }
+
+    row.innerHTML = `
+      <div class="debt-row-left">
+        <span class="debt-row-name">Daire ${apt.id} - ${escapeHtml(apt.occupant || 'Sakin Belirtilmedi')}</span>
+        <span class="debt-row-details">${detailText}</span>
+      </div>
+      <div class="debt-row-right ${rightClass}">${rightText}</div>
+    `;
+    container.appendChild(row);
+  });
+}
+
 let isFirstSync = true;
 function initApp() {
   const filter = document.getElementById('expenseMonthFilter');
@@ -224,6 +302,7 @@ function initApp() {
   renderExtraCardsView();
   renderPdfReports();
   renderAnnouncement();
+  renderTotalDebtsSummary();
   updateLastUpdatedDisplay();
 
   if (isFirstSync) {
