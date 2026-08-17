@@ -56,13 +56,13 @@ body.dark-theme {
   --bg-subtle: #323232;
   --bg-hover: #484848;
   --text-primary: #ffffff;
-  --text-secondary: #c7c7c7;
-  --text-muted: #787878;
-  --border-color: #2c2c2c;
-  --border-light: #1d1d1d;
-  --primary: #c7c7c7;
-  --primary-hover: #d2d2d2;
-  --primary-light: #2c2c2c;
+  --text-secondary: #8dafcf;
+  --text-muted: #5f5f5f;
+  --border-color: #202529;
+  --border-light: #0d1216;
+  --primary: #10629d;
+  --primary-hover: #3171a7;
+  --primary-light: #202529;
   --success: #7dff95;
   --success-light: #0c2d16;
   --success-border: #15803d;
@@ -73,24 +73,26 @@ body.dark-theme {
 }
 
 body.dark-theme .kasa-main {
-  background: linear-gradient(135deg, var(--bg-card) 0%, #262626 100%);
+  background: linear-gradient(135deg, var(--bg-card) 0%, #0d1216 100%);
 }
 
 body.dark-theme .btn-primary {
-  color: #0a0a0a !important;
+  color: #ffffff !important;
+  background-color: var(--primary) !important;
 }
 
 body.dark-theme .btn-primary i {
-  color: #0a0a0a !important;
+  color: #ffffff !important;
 }
 
 body.dark-theme .btn-primary:hover {
-  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.15) !important;
+  background-color: var(--primary-hover) !important;
+  box-shadow: 0 4px 12px rgba(16, 98, 157, 0.3) !important;
 }
 
 body.dark-theme .btn-secondary {
-  background-color: #262626;
-  border: 1px solid #404040;
+  background-color: #202529;
+  border: 1px solid #35393d;
   color: #ffffff;
 }
 
