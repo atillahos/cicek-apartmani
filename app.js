@@ -313,14 +313,23 @@ function renderTotalDebtsSummary() {
 
     // Detail breakdown text
     let detailText = '';
-    const duesStr = apt.isExempt ? 'Muaf' : (netDuesDebtVal < 0 ? `+${formatMoney(Math.abs(netDuesDebtVal))} ₺ (Alacak)` : `${formatMoney(netDuesDebtVal)} ₺`);
+    let duesStr = '';
+    if (apt.isExempt) {
+      duesStr = 'Aidat: Muaf';
+    } else if (netDuesDebtVal === 0) {
+      duesStr = 'Aidat Borcu Yok';
+    } else if (netDuesDebtVal < 0) {
+      duesStr = `Aidat: +${formatMoney(Math.abs(netDuesDebtVal))} ₺ (Alacak)`;
+    } else {
+      duesStr = `Aidat: ${formatMoney(netDuesDebtVal)} ₺`;
+    }
     
-    let extraStr = 'Ek Ödeme Yok';
+    let extraStr = 'Ek Ödeme Borcu Yok';
     if (unpaidExtraDetails.length > 0) {
       extraStr = unpaidExtraDetails.join(' | ');
     }
 
-    detailText = `Aidat: ${duesStr} | ${extraStr}`;
+    detailText = `${duesStr} | ${extraStr}`;
 
     row.innerHTML = `
       <div class="debt-row-left">
