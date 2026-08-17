@@ -1311,3 +1311,10 @@ p.subtitle {
   color: var(--primary);
   background-color: var(--primary-light);
 }
+
+/* Dashboard SPA Section Layout spacing fix */
+#dashboardSection {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
