@@ -46,32 +46,37 @@
   <main class="container app-main">
 
     <!-- Sekmeli Menü Navigasyonu -->
-    <nav class="tab-navigation">
-      <button class="tab-btn active" data-target="dashboardSection">
-        <div class="tab-btn-header">
-          <span class="tab-btn-label">Genel Durum</span>
-          <div class="tab-btn-icon"><i class="fa-solid fa-chart-pie"></i></div>
-        </div>
-      </button>
-      <button class="tab-btn" data-target="paymentsSection">
-        <div class="tab-btn-header">
-          <span class="tab-btn-label">Aidatlar</span>
-          <div class="tab-btn-icon"><i class="fa-solid fa-credit-card"></i></div>
-        </div>
-      </button>
-      <button class="tab-btn" data-target="expensesSection">
-        <div class="tab-btn-header">
-          <span class="tab-btn-label">Giderler</span>
-          <div class="tab-btn-icon"><i class="fa-solid fa-arrow-trend-down"></i></div>
-        </div>
-      </button>
-      <button class="tab-btn" data-target="pdfSection">
-        <div class="tab-btn-header">
-          <span class="tab-btn-label">Yıllık Raporlar</span>
-          <div class="tab-btn-icon"><i class="fa-solid fa-file-pdf"></i></div>
-        </div>
-      </button>
-    </nav>
+    <div class="menu-container" style="display: flex; flex-direction: column; gap: 0.75rem;">
+      <div class="section-header" style="margin-bottom: 0;">
+        <h2><i class="fa-solid fa-compass"></i> Menü</h2>
+      </div>
+      <nav class="tab-navigation" style="margin-bottom: 0;">
+        <button class="tab-btn active" data-target="dashboardSection">
+          <div class="tab-btn-header">
+            <span class="tab-btn-label">Genel Durum</span>
+            <div class="tab-btn-icon"><i class="fa-solid fa-chart-pie"></i></div>
+          </div>
+        </button>
+        <button class="tab-btn" data-target="paymentsSection">
+          <div class="tab-btn-header">
+            <span class="tab-btn-label">Aidatlar</span>
+            <div class="tab-btn-icon"><i class="fa-solid fa-credit-card"></i></div>
+          </div>
+        </button>
+        <button class="tab-btn" data-target="expensesSection">
+          <div class="tab-btn-header">
+            <span class="tab-btn-label">Giderler</span>
+            <div class="tab-btn-icon"><i class="fa-solid fa-arrow-trend-down"></i></div>
+          </div>
+        </button>
+        <button class="tab-btn" data-target="pdfSection">
+          <div class="tab-btn-header">
+            <span class="tab-btn-label">Yıllık Raporlar</span>
+            <div class="tab-btn-icon"><i class="fa-solid fa-file-pdf"></i></div>
+          </div>
+        </button>
+      </nav>
+    </div>
 
     <!-- 1. GENEL DURUM (DASHBOARD) SEKME ALANI -->
     <div id="dashboardSection">
