@@ -1239,9 +1239,11 @@ p.subtitle {
 }
 .debt-row.has-credit {
   border-left: 4px solid var(--success);
+  background-color: var(--success-light);
 }
 .debt-row.no-debt {
   border-left: 4px solid var(--success);
+  background-color: var(--success-light);
 }
 .debt-row-left {
   display: flex;
