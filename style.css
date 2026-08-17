@@ -52,24 +52,24 @@
 
 body.dark-theme {
   --bg-main: #0a0a0a;
-  --bg-card: #141414;
-  --bg-subtle: #222222;
-  --bg-hover: #2c2c2c;
+  --bg-card: #1d1d1d;
+  --bg-subtle: #323232;
+  --bg-hover: #484848;
   --text-primary: #ffffff;
-  --text-secondary: #a3a3a3;
-  --text-muted: #525252;
-  --border-color: #262626;
-  --border-light: #171717;
-  --primary: #ffffff;
-  --primary-hover: #e5e5e5;
-  --primary-light: #262626;
-  --success: #22c55e;
-  --success-light: #052e16;
+  --text-secondary: #c7c7c7;
+  --text-muted: #787878;
+  --border-color: #2c2c2c;
+  --border-light: #1d1d1d;
+  --primary: #c7c7c7;
+  --primary-hover: #d2d2d2;
+  --primary-light: #2c2c2c;
+  --success: #7dff95;
+  --success-light: #0c2d16;
   --success-border: #15803d;
-  --danger: #ef4444;
-  --danger-light: #450a0a;
-  --warning: #eab308;
-  --warning-light: #422006;
+  --danger: #ff8080;
+  --danger-light: #3d0c0c;
+  --warning: #ffbc5e;
+  --warning-light: #2d1702;
 }
 
 body.dark-theme .kasa-main {
@@ -1351,13 +1351,6 @@ p.subtitle {
   color: var(--primary);
 }
 
-body.dark-theme .tab-btn.active {
-  border-top: 4px solid #ffffff;
-  background: linear-gradient(135deg, var(--bg-card) 0%, #2a2a2a 100%);
-}
-body.dark-theme .tab-btn.active .tab-btn-label {
-  color: #ffffff;
-}
 
 /* Dashboard & Payments SPA Section Layout spacing fix */
 #dashboardSection,
