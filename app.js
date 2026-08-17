@@ -668,6 +668,7 @@ function commitAidatPaymentChanges() {
   renderKasaSummary();
   renderDuesTable();
   renderGridViewCards();
+  renderTotalDebtsSummary();
   updateAidatSaveBar();
   showToast('Aidat ödeme değişiklikleri kaydedildi.', 'success');
 }
@@ -680,6 +681,7 @@ function discardAidatPaymentChanges() {
   renderDuesTable();
   renderGridViewCards();
   renderKasaSummary();
+  renderTotalDebtsSummary();
   updateAidatSaveBar();
   showToast('Değişiklikler geri alındı.', 'info');
 }
@@ -706,6 +708,7 @@ function togglePaymentStatus(aptId, month) {
   renderKasaSummary();
   renderDuesTable();
   renderGridViewCards();
+  renderTotalDebtsSummary();
   updateAidatSaveBar();
 }
 
@@ -1154,6 +1157,7 @@ function commitExtraPaymentChanges() {
   renderKasaSummary();
   renderExtraCollections();
   renderExtraCardsView();
+  renderTotalDebtsSummary();
   updateExtraSaveBar();
   showToast('Ek ödeme değişiklikleri kaydedildi.', 'success');
 }
@@ -1165,6 +1169,7 @@ function discardExtraPaymentChanges() {
   pendingExtraPayments = null;
   renderExtraCollections();
   renderExtraCardsView();
+  renderTotalDebtsSummary();
   updateExtraSaveBar();
   showToast('Değişiklikler geri alındı.', 'info');
 }
@@ -1354,6 +1359,7 @@ function stagePendingToggle(colId, aptId) {
   // Update both views
   renderExtraCollections();
   renderExtraCardsView();
+  renderTotalDebtsSummary();
   updateExtraSaveBar();
 }
 
