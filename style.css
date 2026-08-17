@@ -51,24 +51,29 @@
 }
 
 body.dark-theme {
-  --bg-main: #0f172a;
-  --bg-card: #1e293b;
-  --bg-subtle: #334155;
-  --bg-hover: #475569;
-  --text-primary: #f8fafc;
-  --text-secondary: #cbd5e1;
-  --text-muted: #64748b;
-  --border-color: #334155;
-  --border-light: #1e293b;
-  --primary-light: #1e293b;
-  --success-light: #064e3b;
-  --success-border: #047857;
-  --danger-light: #7f1d1d;
-  --warning-light: #78350f;
+  --bg-main: #0a0a0a;
+  --bg-card: #141414;
+  --bg-subtle: #222222;
+  --bg-hover: #2c2c2c;
+  --text-primary: #ffffff;
+  --text-secondary: #a3a3a3;
+  --text-muted: #525252;
+  --border-color: #262626;
+  --border-light: #171717;
+  --primary: #ffffff;
+  --primary-hover: #e5e5e5;
+  --primary-light: #262626;
+  --success: #22c55e;
+  --success-light: #052e16;
+  --success-border: #15803d;
+  --danger: #ef4444;
+  --danger-light: #450a0a;
+  --warning: #eab308;
+  --warning-light: #422006;
 }
 
 body.dark-theme .kasa-main {
-  background: linear-gradient(135deg, var(--bg-card) 0%, #1e1b4b 100%);
+  background: linear-gradient(135deg, var(--bg-card) 0%, #262626 100%);
 }
 
 /* Base Resets */
